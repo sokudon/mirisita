@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0054)http://sokudon.s17.xrea.com/million_live_rtb_calc.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+<!--
+textarea {
+max-width:400px;
+max-height:200px;
+resize: none;
+}
+-->
+</style>
+<title>みります・でれすてれいんぼうPT</title>
+
+<script type="text/javascript" charset="UTF-8" src="./みりますRTB計算_files/xrea_header.js.ダウンロード" async="async"></script>
+</head>
+<body style="">
+<script async="" src="./p.txt"></script>
+<script type="text/javascript">
+
+var stt;
+function stringfilter() {
+st="";
+
+var pt=JSON.parse(document.getElementById("val").value);
+//{"p2m":70,"p6m(p2mp)":116,"p4m":93,"pmm":140,
+//"2m":58,"6m(2mp)":96,"4m":77,"mm":116,"ibe5bai":720}
+var pp=[];
+var k=0;
+for (key in pt) {
+  pp[k]= pt[key];k++;
+}
+
+var pts=0;
+var len=pat.length;
+for(var i=0;i<len;i++){
+pts= pp[0]*parseInt(pat[i][0],"10");
+pts+=pp[1]*parseInt(pat[i][1],"10");
+pts+=pp[2]*parseInt(pat[i][2],"10");
+pts+=pp[3]*parseInt(pat[i][3],"10");
+pts+=pp[4]*parseInt(pat[i][4],"10");
+pat[i][5]= pts;
+}
+
+pat.sort(function(a,b){return(a[5] - b[5]);});
+
+st =JSON.stringify(pt)+"\r\n" +JSON.stringify(pat);
+document.getElementById("tbl").innerHTML= st;
+
+stt=st;
+
+return;
+}
+
+
+function DLCSV(){
+var txt=stt.replace(/\[/gm,"");
+txt = txt.replace(/\],?/gm,"\r\n");
+txt = txt.replace(/[{}]/gm,"");
+txt = txt.replace(/:\d+/gm,"");
+TextDL(txt,"border.csv")}
+
+function DLJSON(){
+TextDL(stt)}
+
+function TextDL(n,t){b=new Blob([n],{type:"text/plain"}),a=document.createElement("a"),a.download=t,a.href=window.URL.createObjectURL(b),e=document.createEvent("MouseEvent"),e.initEvent("click",!0,!0),a.dispatchEvent(e)
+}
+
+    -->
+</script>
+<h1>みります/でれすてれいんぼうPTめいかあ</h1>
+PTパターンのJSONを入れてカスタムテーブルを作る鶴、計算量は<a href="p.txt">10の5べき乗まで</a> (ライブ+お仕事ライブ+イベ)C5のパターンがあるかな<br>
+<label for="val">PTパターン<input type="text" id="val" value=""><br></label>
+みりしたシアターの入力例:　{"2m":35,"2mp":62,"4m":49,"6m":64,"mm":85}　<a href="https://imasml-theater-wiki.gamerch.com/%E3%80%90%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E3%80%91%E3%83%97%E3%83%A9%E3%83%81%E3%83%8A%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%B7%E3%82%A2%E3%82%BF%E3%83%BC%EF%BD%9E%E3%83%A9%E3%83%B3%E3%83%8B%E3%83%B3%E3%82%B0%E3%83%BB%E3%83%8F%E3%82%A4%E3%83%83%EF%BD%9E#content_2_2">"wikiのpt表,work2M(Sスコア)なら25ポイントなので　"w2m":25 とかに変える</a><br>
+みりしたツアー入力例 :　{"2m":58,"6m(2mp)":96,"4m":77,"mm":116,"p2m":70}　<a href="https://imasml-theater-wiki.gamerch.com/%E3%80%90%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E3%80%91%E3%83%97%E3%83%A9%E3%83%81%E3%83%8A%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%84%E3%82%A2%E3%83%BC%EF%BD%9Edans%20l%E2%80%99obscurit%C3%A9%EF%BD%9E#content_2_2">"wikiのpt表</a><br>
+<br>
+でれあたぽん低難易度：　{"sta10":25,"sta11":28,"sta12":31,"sta13":34,"sta14":37}　<br>
+でれあたぽん高難易度：　{"sta17":47,"sta18":50,"sta19":53,"piano":70,"forte":84}　<br>
+<input type="Submit" value="Convert" generate"="" onclick="stringfilter();return false">
+<input type="Submit" value="CSVダウンロード"   Generate" onclick="DLCSV();return false">
+<input type="Submit" value="JSONダウンロード"   Generate" onclick="DLJSON();return false">
+</form>
+<div id="tbl">
+</div>
+</body>
+</html>

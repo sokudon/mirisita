@@ -152,7 +152,8 @@ date_fm=date_fm.replace(/\(J.+/,"");
 	else{
 	timest += now.format(date_fm)+"<br>";
 	}
-	timest += kaishi +esps+"("+prog +"%)<br>"
+	//<progress id="myProgress" value="0" max="100">0%</progress>
+	timest += kaishi +esps+"("+prog +"%"+ '<progress id="myProgress" value="' + prog +'" max="100"></progress>' +")<br>"
 	+zan +timetxt+"<br><br>";
 	if(ostime){
 	timest +="開始時間:" +moment(ibekaishi).format(date_fm).replace(/UTC(.\d\d)(\d\d)/,"UTC$1:$2")+addDST(ibekaishi)+"<br>"
@@ -164,7 +165,7 @@ date_fm=date_fm.replace(/\(J.+/,"");
 	}
 	timest +="イベ時間:" +prog2;
 	timest +=tz+"</font>";
-		
+
 	document.getElementById("cdt_now").innerHTML=timest;
 	document.getElementById("ibe").innerHTML ="<font size=\"20\">"+ ibemie;
 
@@ -238,7 +239,7 @@ function toTwitter() {
 	s=s.replace(/<br>/gm,"\r\n");
 	s=s.replace(/<.*?>/gm,"");
 	s=s.replace(/\r\n\r\n/gm,"\r\n");
-	s=s+"\r\nhttp://sokudon.s17.xrea.com/ibetimer.html\r\n#みりしタイマー\r\n#みりしたicalender";
+	s=s+"\r\nhttp://sokudon.s17.xrea.com/ibetimer.html\r\n#みりしたタイマー";
 	
 	if (url == "") {
 		url = "http://twitter.com/share?text=" + encodeURIComponent(s);
@@ -247,13 +248,12 @@ function toTwitter() {
 	}
 	window.open(url,"_blank","width=600,height=300");
 }
-
+-->
 </script>
 <body id="bg">
 <h1>みりしたいべたいまー改</h1>
 <span id="ibe">ibe</span><br>
 <span id="cdt_now">text</span><br><br>
-
 <form name="tzone">
 <!-- 
 http://support.microsoft.com/kb/973627/ja
@@ -349,7 +349,7 @@ M$より機械翻訳とはいえ
 </form>
 
 <b>カレンダーアプリに登録する(iCalender作成):</b>
-<input type="Submit" value="iCalender" generate"="" onclick="makeical();return false">　
+<input type="Submit" value="iCalendar" generate"="" onclick="makeical();return false">　
 <a href="./miri_event_calender.html">GOOGLEカレンダー向け</a><br>
 
 <p>クロマキー合成、背景色

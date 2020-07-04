@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!-- saved from url=(0065)http://sokudon.s17.xrea.com/neta/Highstock%20compare_elapsed.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="./Highstock compare_files/tbl.css" type="text/css" rel="stylesheet">
+<title>Highstock compare</title>
+<script type="text/javascript" src="./Highstock compare_files/moment-with-locales.js"></script><style></style>
+<script type="text/javascript" src="./Highstock compare_files/echo"></script><style></style>
+	<script type="text/javascript" src="https://script.googleusercontent.com/macros/echo?user_content_key=dZExJLNPve4v3C-qPC_TaOc31WZiJ-wtX6UxQzqeI7SRMEvxnt7EY-7UFH3HMmfRTpKjgcAj_p_RC0oOcz8QBKshhi0vSbQkm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnAaDAwvnV_J1xxO--Hfgsb3bekPQDOkqGikij2hoVNNcGpnjsDqsn-Vfl9FIY5I_XkWY2nZ7HPw5&lib=MGXfrqAd9FP5SdULpOtKILoFpGDg2vV9V"></script>
+
+<script type="text/javascript" src="./Highstock compare_files/jquery.min.js"></script>
+<script type="text/javascript" src="./Highstock compare_files/bd.txt"></script>
+<script src="./Highstock compare_files/cgss_highstock_cmp2.js"></script>
+<script src="./Highstock compare_files/cgss_high_title.js"></script>
+<script src="./Highstock compare_files/highstockv8keika.js"></script>
+<script src="./Highstock compare_files/exporting.js"></script>
+<script src="./Highstock compare_files/export-data.srckeika.js"></script>
+<style type="text/css">
+${demo.css}
+</style>
+<script type="text/javascript">
+<!--
+var ibestart=ibestart;
+var pt =[];
+var sc =[];
+//var ibe="輝け！ビートシューター";
+//var ibeend="2020-03-29T12:00:00.000Z";
+//var ibestart="2020-03-21T06:00:00.000Z";
+BD.sort(function(a, b) {
+		return moment(a[0]) - moment(b[0]);
+})
+
+for(var k=1;k<BD[0].length;k++){
+if(BD[0][k]!="300001位"){
+if(BD[0][k].match(/スコア/)){
+sc[k-1]={};
+sc[k-1].name=BD[0][k];
+sc[k-1].ibestart=ibestart;
+sc[k-1].data=[];
+}
+else{
+pt[k-1]={};
+pt[k-1].ibestart=ibestart;
+pt[k-1].name=BD[0][k];
+pt[k-1].data=[];
+}
+for(var i=1;i<BD.length;i++){
+//if(BD[i][k]!=""){
+if(BD[0][k].match(/スコア/)){
+sc[k-1].data[i-1]=[];
+sc[k-1].data[i-1][0]=moment(BD[i][0])-moment(ibestart)+moment("2014-01-01T00:00:00+09:00");
+sc[k-1].data[i-1][1]=BD[i][k];
+}
+else{
+pt[k-1].data[i-1]=[];
+pt[k-1].data[i-1][0]=moment(BD[i][0])-moment(ibestart)+moment("2014-01-01T00:00:00+09:00");
+pt[k-1].data[i-1][1]=BD[i][k];
+}}}
+}//}
+
+var border_data=utc_adjust(pt.concat(border));
+
+
+function escapeHTML(html) {
+  return jQuery('<div>').text(html).html();
+}
+
+function url(){
+var url=document.location.href;
+var n = url.indexOf("#");
+if (n > -1) {
+url= url.substring(0,n);
+}
+var s="";
+var reg="";
+var cc=Highcharts.charts[0];
+for(var i=0;i<cc.series.length;i++){
+if(cc.series[i].visible){
+if(cc.series[i].name.match(/\d+位/)){
+reg +="^"
+}
+reg +=cc.series[i].name +"|";
+}
+}
+s = "%28"+encodeURIComponent(reg.replace(/\|$/,""))+"%29";
+document.location.href=url+"#," +s;
+
+return;
+}
+
+function get_web_para(s){
+var url=document.location.href;
+
+var n = url.indexOf("#");
+if (n > -1) {
+s = url.substring(n+1,url.length);
+url= url.substring(0,n);
+var nn=s.split(",");
+if(nn.length>=2){
+s=nn[0];
+events=decodeURIComponent(decodeURIComponent(nn[1]));
+}
+}
+s=escapeHTML(decodeURIComponent(s));
+return s;
+}
+
+function eventfilter(bd,s){
+
+var reg = new RegExp(s);
+
+for(var i=0;i<bd.length;i++){
+if(bd[i]['name'].match(reg)==null){
+bd[i].visible =false;
+}}
+		diff=1;
+return bd
+}
+-->
+</script>
+</head>
+<body>
+<div data-highcharts-chart="0" id="container" style="height: 600px; min-width: 310px; overflow: hidden;"></div>
+<div id="tbl"></div><!--
+<button id="5001" class="autocompare">5001のみ</button>
+<button id="10001" class="autocompare">10001のみ</button>
+<button id="50001" class="autocompare">50001のみ</button>
+<button id="501" class="autocompare">501のみ</button>
+<button id="2001" class="autocompare">2001のみ</button>
+<button id="10001" class="autocompare">10001のみ</button>
+<button id="20001" class="autocompare">20001のみ</button>
+<button id="60001" class="autocompare">60001のみ</button>
+<button id="120001" class="autocompare">120001のみ</button>
+-->
+<button id="all" class="autocompare">すべて</button>
+<form name="seek" style="display: inline">
+<input type="text" id="seek_n" value="/総合/">
+</form>
+<button id="md" class="autocompare">けんさく(/～/でせいきひょうげん)</button>
+<br><br>
+<button id="DMS">DHM(日時分)で表示</button>
+<button id="MS">HM(時分)で表示</button>
+<button id="RM">イベント時間で表示</button>
+<button id="PER">進行度（%）で表示(現イベ基準)</button>
+
+<form name="trg">
+<b>CSV時刻出力設定※イベント時間で表示時のみ、残り時間はDHMかHMでおｋ（）</b><br>
+<select name="time" onchange="csvOutputChanged();">
+<option>--経過時間で出力--</option>
+<option>0001/01/01 12:00:00 VB.NET</option>
+<option>1899/12/30 00:00:00 VB6,M$エクセル、googleスプレッドシート</option>
+<option>1970-01-01 00:00:00 JS,エポック秒</option>
+<option>2014-01-01 00:00:00 sokudon</option>
+<option>0～ シリアル値M$エクセル、googleスプレッドシート</option>
+<option>0～ utcエポック秒</option>
+<option>--イベント時間で出力(現イベ基準--</option>
+<option selected="selected">イベント開始りある時間(現地) realtime</option>
+<option>イベント開始りある時間 toString()英語表記？</option>
+<option>イベント開始りある時間 エクセルシリアル値</option>
+<option>イベント開始りある時間ISO8601 realtime</option>
+<option>イベント開始りある時間ISO8601 unixtime,utc</option>
+<option>イベント開始りある時間 utcエポック秒</option>
+</select>
+</form>
+
+<br>
+<b>順位検索ブックマーク版</b><br>
+<a href="http://sokudon.s17.xrea.com/neta/Highstock%20compare_elapsed.html#501" target="_blank" rel="noopener">501位ブクマ版</a>
+<a href="http://sokudon.s17.xrea.com/neta/Highstock%20compare_elapsed.html#2001" target="_blank" rel="noopener">2001位ブクマ版</a>
+<a href="http://sokudon.s17.xrea.com/neta/Highstock%20compare_elapsed.html#10001" target="_blank" rel="noopener">10001位ブクマ版</a>
+<a href="http://sokudon.s17.xrea.com/neta/Highstock%20compare_elapsed.html#20001" target="_blank" rel="noopener">20001位ブクマ版</a>
+<a href="http://sokudon.s17.xrea.com/neta/Highstock%20compare_elapsed.html#60001" target="_blank" rel="noopener">60001位ブクマ版</a>
+<a href="http://sokudon.s17.xrea.com/neta/Highstock%20compare_elapsed.html#120001" target="_blank" rel="noopener">120001位ブクマ版</a>
+<a href="http://sokudon.s17.xrea.com/neta/Highstock%20compare_elapsed.html#,^\d+%E4%BD%8D,8,RM" target="_blank" rel="noopener">最新イベントのみ</a>
+<br>
+<br>
+<input type="Submit" value="URLで状態をほぞん" generate"="" onclick="url();return false">
+
+<script src="chrome-extension://hhojmcideegachlhfgfdhailpfhgknjm/web_accessible_resources/index.js"></script></body></html>

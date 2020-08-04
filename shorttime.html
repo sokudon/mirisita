@@ -1,0 +1,154 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>あいますたいむ</title>
+<head>
+<link href="./dt_json/tbl.css" type="text/css" rel="stylesheet">
+</head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="./LIB/moment-with-locales.js"></script>
+<script  type="text/javascript" src="https://script.googleusercontent.com/macros/echo?user_content_key=ue4RGPfucX92NXqpWMDGgVeImB5geZJyJ7XbOo-YGAC79TLuglbOqVLnvo8WPTRyo-JtAxB5KXwPtQc7ys3_0xML5BSOGmvDm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnIwnGm7yBKgGSel0RDUn0vPYhe-VW29ExLE3INRPkAk0s3rLhwBY4u295dVVz_TvUZ0mgLDwm9cO&lib=MGyh8MmX6Zph-WiNi303YpYFpGDg2vV9V"></script>
+<script>
+<!--
+var dlen=14;
+
+window.onload = function() {
+get_web_para();
+set();
+}
+
+function url(){
+var url=document.location.href;
+var n = url.indexOf("#");
+if (n > -1) {
+url= url.substring(0,n);
+}
+var s="#";
+s += document.gm.gm.options.selectedIndex;
+s += ","+document.gg.nn.options.selectedIndex;
+if(document.getElementById("title").value!=""){
+s += "," +encodeURIComponent(datastring);
+}
+return url+s;
+}
+
+function get_web_para(){
+var url=document.location.href;
+var s="";
+var n = url.indexOf("#");
+if (n > -1) {
+s = url.substring(n+1,url.length);
+url= url.substring(0,n);
+var n=s.split(",");
+if(n.length>=4){document.getElementById("title").value=paraconcat(s);}
+}
+}
+
+function paraconcat(n){
+var n=n.split(",");
+var m="";
+for(var i=0;i<4;i++){
+n[i]=decodeURIComponent(n[i]);
+m+=n[i] +",";
+}
+return m;
+}
+
+
+function paramake(n){
+var n=n.split(",");
+var m="";
+for(var i=0;i<4;i++){
+n[i]=encodeURIComponent(n[i]);
+m+=n[i] +",";
+}
+return m;
+}
+
+function set(){
+var n=document.getElementById("title").value.split(",")
+if(n.length<=3){
+gethtml(data);
+return;
+}
+
+var src='https://imasml-theater-wiki.gamerch.com/gamerch/searchPages?type=fulltext&q=';
+
+var data2=[];
+var k=0;
+for(var i=0;i<data.length;i++){
+for(var j=0;j<4;j++){
+if(data[i][0].indexOf(n[j])>=0){
+data2[k]=[];
+data2[k][0]=data[i][0];
+data2[k][1]=data[i][1];
+data2[k][2]=data[i][2];
+data2[k][3]='<a href="'+src+data[i][0]+ '">wiki_src</a>';
+k++;
+}
+}}
+
+data2.sort(function(a, b) {
+  if (moment(a[1]) > moment(b[1])) {
+    return 1;
+  } else {
+    return -1;
+  }
+})
+
+gethtml(data2);
+return;
+}
+
+function gethtml(data){
+var str="<table boder=\"1\"class=\"border\"><tbody>";
+
+for(var i=0;i<data.length;i++){
+str+="<tr>";
+for(var j=0;j<data[0].length;j++){
+var tmp =data[i][j];
+if(j==0 || j==2 || j==13){
+if(j==2){
+if(tmp.match(/^\d+.+Z$/)){
+ tmp=moment.utc(tmp).add("h",9).format("HH:mm");
+}}
+str+="<td>"+ tmp +"</td>";
+}
+}
+str+="</tr>";
+}
+
+document.getElementById("now").innerHTML=str;
+return 
+}
+
+//Twitterボタン
+function toTwitter() {
+	var url = "";
+    
+    s=document.getElementById("now").innerHTML;
+	s=s.replace(/(<br>|<\/tr>)/gm,"\r\n");
+	s=s.replace(/<.*?>/gm,"");
+	s=s.replace(/\r\n\r\n/gm,"\r\n");
+	s=s+"\r\nhttp://sokudon.s17.xrea.com/shorttime.html#"+paramake(document.getElementById("title").value)+"\r\n#みりしたタイマー";
+	
+	if (url == "") {
+		url = "http://twitter.com/share?text=" + encodeURIComponent(s);
+	} else {
+		url = "http://twitter.com/share?url=" + url + "&text=" + encodeURIComponent(s);
+	}
+	window.open(url,"_blank","width=600,height=300");
+}
+-->
+-->
+</script>
+<body id="bg">
+<h1>あいますたいむけんさく</h1>
+//曲名,曲名,曲名,曲名, 4つじょうの曲名でけんさくしてください（）<br>
+<input type="text" name="" value="" id="title" maxlength="100"  size="100" ><br>
+<input type="Submit" value="検索" Generate" onclick="set();return false"><br>
+
+<span id="now"></span><br>
+<p align="center"><a href="javascript:toTwitter()"><img src="./neta/imm_files/saved_resource" alt="Send to Twitter" width="61" height="61" border="0"></a></p>
+<br>
+時間src:ml-wiki<br>
+</body>
+</html>

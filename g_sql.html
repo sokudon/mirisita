@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
+<title>GoogleスプレットシートAPIテスト</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript">
+<!--
+
+function checkJSON(){
+  try {
+  var ok=clear(document.getElementById("BD_JSON").value);
+  var JSON_OK= JSON.parse(ok);
+  return confirm("送信しても良いですか？");
+  } catch(e){
+  alert(e);
+  return false;
+  }
+  
+}
+
+var backup="";
+
+
+function clear(){
+var pat=[
+['TEXT(TODAY(),\\"YYYY-MM-DD\\")','TEXT(TODAY()-10,\\"YYYY-MM-DD\\")'],
+['TEXT(TODAY(),\\"YYYY-MM-DD\\")','TEXT(TODAY()-30,\\"YYYY-MM-DD\\")'],
+['TEXT(TODAY()-365,\\"YYYY-MM-DD\\")','TEXT(TODAY()-365-10,\\"YYYY-MM-DD\\")'],
+['TEXT(TODAY()-2*365,\\"YYYY-MM-DD\\")','TEXT(TODAY()-2*365-10,\\"YYYY-MM-DD\\")'],
+['TEXT(\\"2021-06-01\\",\\"YYYY-MM-DD\\")','TEXT(\\"2020-06-01\\",\\"YYYY-MM-DD\\")'],
+['TEXT(\\"2020-06-01\\",\\"YYYY-MM-DD\\")','TEXT(\\"2019-06-01\\",\\"YYYY-MM-DD\\")'],
+['TEXT(\\"2019-06-01\\",\\"YYYY-MM-DD\\")','TEXT(\\"2018-06-01\\",\\"YYYY-MM-DD\\")'],
+['TEXT(\\"2020-09-01\\",\\"YYYY-MM-DD\\")','TEXT(\\"2020-06-01\\",\\"YYYY-MM-DD\\")'],
+['TEXT(\\"2020-06-01\\",\\"YYYY-MM-DD\\")','TEXT(\\"2020-03-01\\",\\"YYYY-MM-DD\\")'],
+['TEXT(\\"2020-03-01\\",\\"YYYY-MM-DD\\")','TEXT(\\"2020-12-01\\",\\"YYYY-MM-DD\\")'],
+['TEXT(\\"2019-12-01\\",\\"YYYY-MM-DD\\")','TEXT(\\"2019-09-01\\",\\"YYYY-MM-DD\\")'],
+['TEXT(\\"2019-09-01\\",\\"YYYY-MM-DD\\")','TEXT(\\"2019-06-01\\",\\"YYYY-MM-DD\\")']
+]
+;
+var s=document.getElementById("BD_JSON").value;
+
+var rangesel=document.getElementById("utcdiff").selectedIndex;
+s=s.replace("PAT1",pat[rangesel][0]);
+s=s.replace("PAT2",pat[rangesel][1]);
+
+document.getElementById("BD_JSON").value=JSON.stringify(JSON.parse(s));
+
+return s;
+}
+
+
+
+var z=0;//ula=2,fes0,
+
+-->
+</script>
+</head>
+<body>
+<iframe src="#" id="fake-target" name="fake-target" style="width:0px; height:0px; border:0px;">
+</iframe>
+
+<b>すぷれっどしーとにまとめでーた(JSON)送信するさんぷる<br>
+
+<select name="owata" id="utcdiff" onChange="clear()">
+<option selected="selected">10日前から今日まで</option>
+<option>1ヶ月前から今日まで</option>
+<option>1年と10日前から1年前まで</option>
+<option>2年と10日前から2年前まで</option>
+<option>2020年6月～年次</option>
+<option>2019年6月～年次</option>
+<option>2018年6月～年次</option>
+<option>2020年6月～q1</option>
+<option>2019年～q4</option>
+<option>2019年～q3</option>
+<option>2019年～q2</option>
+<option>2019年6月～q1</option>
+</select>
+
+<form id="formID" action="https://script.google.com/macros/s/AKfycbw9c_LMcPaRTBqDbqOiKMScKPFshjzK3ELemMF4NtBnB1X-Fgc/exec" method="post" onSubmit="return checkJSON()">
+<form name="BD__JS">
+JSONでーた(認証後だれでも送信可能,JSONは一番上のいべとっぷぼだ部分／DBでも作成可能)<br>)：<br>
+<textarea rows="5" cols="40" name="BD_JSON" id="BD_JSON">
+{"data":"=QUERY('ミリシタカツドウ'!1:600,\"  select A,B,F,J,N,Q where (A <= date '\" & PAT1 & \"' AND A >= date '\"& PAT2 & \"') \",1)"}
+</textarea>
+<br>
+<input type="submit" value="すぷれっどしーとへ一括送信">
+</form>
+</body>
+</html>

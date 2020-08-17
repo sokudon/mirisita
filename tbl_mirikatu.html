@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name=viewport content="width=device-width, initial-scale=1">
 <meta name="keywords" content="CGSS　ぼーだー　ボーダー　border">
-<title>デレステボーダー/CGSSBORDER(GOOGLECHART)</title>
+<title>>酢鶏無どんのみりしたかつどう(GOOGLECHART)</title>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124912501-1"></script>
 <script>
@@ -17,6 +17,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script src="./LIB/moment-with-locales.js"></script>
 	<script type="text/javascript" src="https://script.googleusercontent.com/macros/echo?user_content_key=1-pIAEsbcD1UG9gGmV6awiuG__3NK160U4uCT4B6lBXqCrfVnNc6Z0olF-XsBsW2Kp7_hL9OIwYvSbHAJRArxNv8pMDyOycAm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnJT57dlo85z_TaH2Dr2T5WW4VK4hWTgEckAlV909s0-ry8a-LAs3FOB_mjSViFVz_ScfNc2fO4hD&lib=MUddtJhzOyoZfFsOpRp_d5YFpGDg2vV9V"></script>
+    <script type="text/javascript" src="https://script.googleusercontent.com/macros/echo?user_content_key=7yQguxI0e0crQXfHHSb5-oeWqXnn4N5IxDZuwFvrXfd1AqcysydaiSre7PXHv0N-k0hpaabmCtHL_kqbJxlxtFn567UzUGtVm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnLXQ4_u5WgqcjFSHnPJlHe5eyYQjKSbZcvRU16JVF3TUyij4rO4Kt7aHxcGbPHovtK7JDsfb1Zli&lib=MC6IJjN-_03t7zlIqdZdAgXndBJ9ix56c"></script>
     <script type='text/javascript'>
 <!--
 //https://developers.google.com/chart/interactive/docs/reference
@@ -71,6 +72,24 @@ if(t=="制限なし"){
 for(var o=[],a="",i=0,r=0;i<e.length;i++){
 var dt=moment.utc(e[i][0]).add("Hours",9);
 o[r]=i;r++;
+}}
+
+if(t.match(/イベント/)){
+var mkmonth=[];
+var dra=eventdata.length;
+for(var i=0;i<dra;i++){
+mkmonth[i] = moment(eventdata[i][5]);
+}
+mkmonth.sort(
+  function(a,b){
+    return (a < b ? 1 : -1);
+  }
+);
+for(var o=[],a="",i=0,r=0;i<e.length;i++){
+var dt=moment(e[i][0]);
+if(dt<mkmonth[r]){
+o[r]=i;r++;
+}
 }}
 
 if(t=="月次"){
@@ -357,6 +376,7 @@ t_offset_min=-t_offset_min;
 時間(JSTで区切り):
 <select name="HM" onchange="drawChart()">
 <option selected="selected" value="">制限なし</option>
+<option value="">ボーダーありイベント次</option>
 <option value="">月次</option>
 <option value="">クオーター(6月)</option>
 <option value="">年次(6月)</option>

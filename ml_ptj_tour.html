@@ -17,18 +17,16 @@ resize: none;
 -->
 </style>
 <title>みりますPT(つあー)</title>
-
-<script type="text/javascript" charset="UTF-8" src="./みりますRTB計算_files/xrea_header.js.ダウンロード" async="async"></script>
 </head>
 <body style="">
 <!--日付変更にmomentjisを使用、ろーかるで動かすにはhttp://momentjs.com/　が必要-->
-<script async="" src="./ppp.txt"></script>
+<script async="" src="./ppa.js"></script> <!--/ppp.txt-->
 <script type="text/javascript">
 
 function stringfilter() {
 st="";
 var target=document.getElementById("val").value;
-st="<table id=\"sampleTable\" class=\"tablesorter\"><thead><tr><th>2M</th><th>2M+(6m)</th><th>4M</th><th>MM</th><th>PUSH2M</th><th>イベ5倍確定</th><th>曲回数</th></tr></thead><tbody>";
+st="<table id=\"sampleTable\" class=\"tablesorter\"><thead><tr><th>PUSH2M</th><th>PUSH4M</th><th>2M</th><th>4M</th><th>6M,2M+</th><th>イベ5倍確定</th><th>曲回数</th></tr></thead><tbody>";
 
 var div=0;
 
@@ -41,13 +39,16 @@ target +=720;
 div--;
 }}}
 
-var ptt={"p2m":70,//"p6m(p2mp)":116,"p4m":93,"pmm":140,
-"2m":58,"2mp":96,"4m":77,"mm":116,"ibe5bai":720}
+////"PUSH2M","PUSH4M","2M","4M","6M,2M+"
+//	2MIX(ソロ,ユニット)	4MIX	6MIX,2MIX＋(ソロ)	MM
+//PUSH	70	93	116	140
+//NORMAL	58	77	96	116
+var ptt={"PUSH2M":70,"PUSH4M":93,"2M":58,"4M":77,"6M,2M+":96,"ibe5bai":720};
 var pts;
 
 for(var i=0;i<pat.length;i++){
 if(target==pat[i][5]){
-pts= ptt["2m"]*pat[i][0]+ptt["2mp"]*pat[i][1]+ptt["4m"]*pat[i][2]+ptt["mm"]*pat[i][3]+ptt["p2m"]*pat[i][4];
+pts= ptt["PUSH2M"]*pat[i][0]+ptt["PUSH4M"]*pat[i][1]+ptt["2M"]*pat[i][2]+ptt["4Mm"]*pat[i][3]+ptt["6M,2M+"]*pat[i][4];
 st += "<tr><td>" + pat[i][0] +"</td><td>" +  pat[i][1] +"</td><td>" +  pat[i][2] +"</td><td>" + pat[i][3] +"</td><td>" + pat[i][4] +"</td><td>" + div+"</td><td>"+(pat[i][0]+pat[i][1]+pat[i][2]+pat[i][3]+pat[i][4]+div) +"</td></tr>";
 }}
 st +="</tbody></table>";
@@ -82,17 +83,17 @@ var currentSort=[[6,0]];//ぼだ
     -->
     </script>
 <h1>みりますれいんぼうPTさーち（ツアー用）</h1>
-PTポイント；{"2m":58,"2mp":96,"4m":77,"mm":116,"p2m":70,"ibe5bai":720}<br>
-<a href="p_ren_tour.txt">検索可能な数値＋イベ倍数</a><br>
+PTポイント；{"PUSH2M":70,"PUSH4M":93,"2M":58,"4M":77,"6M,2M+":96,"ibe5bai":720}<br>
+<a href="p_ren_tour2.txt">検索可能な数値＋イベ倍数</a><br>
 <label for="val">検索スコア:<input type="text" id="val"><br></label>
 <label for="ibe">いべ曲あり:<input type="checkbox" checked="checked" id="ibe"><br></label>
 <input type="Submit" value="Convert" generate"="" onclick="stringfilter();return false">
 </form>
 <div id="tbl">
 <table id="sampleTable" class="tablesorter">
-<thead><tr><th>2M</th><th>2M+(6m)</th><th>4M</th><th>MM</th><th>PUSH2M</th><th>イベ5倍確定</th><th>曲回数</th></tr></thead>
+<thead><tr><th>PUSH2M</th><th>PUSH4M</th><th>2M</th><th>4M</th><th>6M,2M+</th><th>イベ5倍確定</th><th>曲回数</th></tr></thead>
 </table>
 </div>
-
+<h2><a href="https://docs.google.com/spreadsheets/d/1ryey9HArpEYXN31NqIhGd7xZEPneqlMJWKISKAWnfeQ/edit#gid=2136639685">スプレッドシート版（コピーして使う）</a></h2>
 <h2><a href="./ml_ptj_tour_old.html">旧版はこちら/OLDVER HERE(KOREAN/CHINA)</a></h2>
 </body></html>

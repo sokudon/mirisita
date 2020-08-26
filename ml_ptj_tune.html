@@ -27,7 +27,6 @@ st="";
 var ptpat={"2m":25,"4m":39,"6m":54,"mm":75,"2m+":52};
 var ibept=[];
 
-
 for(var i=0;i<50;i++){
 ibept[i]= Math.ceil((i/100+1)*490);
 }
@@ -35,6 +34,15 @@ var tmp=document.getElementById("ibepts").value;
 tmp = tmp.match(/\d+/);
 var ibept=ibept[tmp];
 ptpat.ibe=ibept;
+var ibept2= Math.ceil(2*(tmp/100+1)*490);
+var ibept4= Math.ceil(4*(tmp/100+1)*490);
+var Xst="X1";
+if(document.getElementById("ibe2").checked){
+ibept=ibept2;Xst="X2";
+}
+if(document.getElementById("ibe4").checked){
+ibept=ibept4;Xst="X4";
+}
 
 var target=document.getElementById("val").value;
 st="<table id=\"sampleTable\" class=\"tablesorter\"><thead><tr><th>2M</th><th>4M</th><th>6M</th><th>MM</th><th>2M+</th><th>イベ</th><th>曲回数</th></tr></thead><tbody>";
@@ -45,12 +53,12 @@ if(document.getElementById("ibe").checked){
 div=Math.floor(target/ibept);
 target = target - div*ibept;
 if(target!=0){
-if(target<191 && div>0){
+if(target<216 && div>0){
 target +=ibept;
 div--;
 }}}
 
-var ptt={"2m":25,"4m":39,"6m":54,"mm":75,"2m+":52}; //,"ibe":537
+var ptt={"2m":25,"4m":39,"6m":54,"mm":75,"2m+":52};
 ptt.ibe=ibept;
 
 for(var i=0;i<pat.length;i++){
@@ -66,7 +74,10 @@ ibept="イベントPTが不明です、ボーナス値を正しく入れてく�
 }
 
 document.getElementById("tbl").innerHTML=st;
-document.getElementById("ibeptt").innerHTML=ibept;
+var ptst="X1:"+ptpat.ibe+ " X2:"+ibept2 +" X4:"+ibept4;
+var reg= new  RegExp("("+Xst+":\\d+)");
+ptst=ptst.replace(reg,"<font color='red'>"+"$1"+"</font>");
+document.getElementById("ibeptt").innerHTML=ptst;
 
 var backsort=currentSort;
 $.tablesorter.defaults.widgets = ['zebra'];
@@ -123,11 +134,14 @@ var currentSort=[[6,0]];//ぼだ
     
     -->
     </script>
-<h1>みりますれいんぼうPTさーち（チューン）連番欠けなし範囲：１９１～２４００</h1>
+<h1>みりますれいんぼうPTさーち（チューン）連番欠けなし範囲：２１６～２０８３</h1>
 PTポイント；{"2m":25,"4m":39,"6m":54,"mm":75,"2m+":52}※イベはアピール合計で変動<br>
 <a href="tune.csv">検索可能な数値＋イベ倍数</a><br>
 <label for="val">検索スコア:<input type="text" id="val"><br></label>
-<label for="ibe">いべ曲あり:<input type="checkbox" checked="checked" id="ibe"><br></label>
+<label for="ibe">いべ曲あり:<input type="checkbox" checked="checked" id="ibe"></label>
+<label for="ibe1"><input type="radio" name="ibe" checked="checked" id="ibe1">等倍X1</label>
+<label for="ibe2"><input type="radio" name="ibe"  id="ibe2">２倍X2</label>
+<label for="ibe4"><input type="radio" name="ibe" id="ibe4">４倍X4</label><br>
 <b>PTボーナスの％</b> <textarea name="r_text" rows="1" cols="2" id="ibepts">18</textarea> 
 イベント推定PT:<span id="ibeptt">--</span><br>
 <input type="Submit" value="Convert" generate"="" onclick="stringfilter();return false">
@@ -137,4 +151,6 @@ PTポイント；{"2m":25,"4m":39,"6m":54,"mm":75,"2m+":52}※イベはアピー
 </div>
 <br>
 <input type="Submit" value="URLにしてブックマーク（）" Generate" onclick="document.location.href=url();return false"><br>
+
+<h2><a href="https://docs.google.com/spreadsheets/d/1vTMZPEk5X4CUN_SxyAlvtNOMcgjnGbJV1_FZ7g06bnc/edit#gid=1043917992">スプレッドシート版こぴーして使う</a></h2>
 </body></html>

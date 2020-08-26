@@ -34,7 +34,7 @@ if(document.getElementById("ibe").checked){
 div=Math.floor(target/720);
 target = target - div*720;
 if(target!=0){
-if(target<300 && div>0){
+if(target<473 && div>0){
 target +=720;
 div--;
 }}}
@@ -48,7 +48,7 @@ var pts;
 
 for(var i=0;i<pat.length;i++){
 if(target==pat[i][5]){
-pts= ptt["PUSH2M"]*pat[i][0]+ptt["PUSH4M"]*pat[i][1]+ptt["2M"]*pat[i][2]+ptt["4Mm"]*pat[i][3]+ptt["6M,2M+"]*pat[i][4];
+pts= ptt["PUSH2M"]*pat[i][0]+ptt["PUSH4M"]*pat[i][1]+ptt["2M"]*pat[i][2]+ptt["4M"]*pat[i][3]+ptt["6M,2M+"]*pat[i][4];
 st += "<tr><td>" + pat[i][0] +"</td><td>" +  pat[i][1] +"</td><td>" +  pat[i][2] +"</td><td>" + pat[i][3] +"</td><td>" + pat[i][4] +"</td><td>" + div+"</td><td>"+(pat[i][0]+pat[i][1]+pat[i][2]+pat[i][3]+pat[i][4]+div) +"</td></tr>";
 }}
 st +="</tbody></table>";
@@ -82,7 +82,7 @@ window.onload = function () {
 var currentSort=[[6,0]];//ぼだ
     -->
     </script>
-<h1>みりますれいんぼうPTさーち（ツアー用）</h1>
+<h1>みりますれいんぼうPTさーち（ツアー用） 欠けなし範囲 473～2980</h1>
 PTポイント；{"PUSH2M":70,"PUSH4M":93,"2M":58,"4M":77,"6M,2M+":96,"ibe5bai":720}<br>
 <a href="p_ren_tour2.txt">検索可能な数値＋イベ倍数</a><br>
 <label for="val">検索スコア:<input type="text" id="val"><br></label>

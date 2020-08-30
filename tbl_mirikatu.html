@@ -68,6 +68,9 @@ end = new Date(end.add('M',1).format("YYYY-MM-01T00:00:00+09:00"));
 start = new Date(start.format("YYYY-MM-01T00:00:00+09:00"));
 
 
+
+
+
 if(t=="制限なし"){
 for(var o=[],a="",i=0,r=0;i<e.length;i++){
 var dt=moment.utc(e[i][0]).add("Hours",9);
@@ -96,7 +99,7 @@ if(t=="月次"){
 var mkmonth=[];
 var dra=(end-start)/30/1000/3600/24;
 for(var i=0;i<dra;i++){
-mkmonth[i] = moment(moment(start).add(i, 'months').calendar());
+mkmonth[i] =moment(moment(start).add(i,'months').calendar('DD/MM/YYYY'));
 }
 mkmonth.sort(
   function(a,b){
@@ -114,7 +117,7 @@ if(t=="クオーター(6月)"){
 var mkmonth=[];
 var dra=(end-start)/30/3/1000/3600/24;
 for(var i=0;i<dra;i++){
-mkmonth[i] = moment(moment(start).add(i*3, 'months').calendar());
+mkmonth[i] =moment(moment(start).add(i*3,'months').calendar('DD/MM/YYYY'));
 }
 mkmonth.sort(
   function(a,b){
@@ -134,7 +137,7 @@ if(t=="年次(6月)"){
 var mkmonth=[];
 var dra=(end-start)/30/12/1000/3600/24;
 for(var i=0;i<dra;i++){
-mkmonth[i] = moment(moment(start).add(i*12, 'months').calendar());
+mkmonth[i] =moment(moment(start).add(i*12,'months').calendar('DD/MM/YYYY'));
 }
 mkmonth.sort(
   function(a,b){

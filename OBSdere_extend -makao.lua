@@ -261,10 +261,10 @@ function set_time_text()
 	prog=0
 	--残りイベント時間　経過0時間にする
 	elaspted=get_timestring(0,format)
-	--left=get_timestring(parse_json_date_utc(finaltime)-parse_json_date_utc(starttime),format)
+	left=get_timestring(parse_json_date_utc(finaltime)-parse_json_date_utc(starttime),format)
 	
 	--または残り開始までの時間にする
-	left=get_timestring(math.abs(lefttime(finaltime)),format)
+	--left=get_timestring(math.abs(lefttime(starttime)),format)
 	end
 	if(tonumber(prog)>100)then
 	prog=100

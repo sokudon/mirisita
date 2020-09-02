@@ -258,8 +258,13 @@ function set_time_text()
 	
 	if(parse_json_date_utc(starttime)>=os.time())then
 	prog=0
-	left=get_timestring(parse_json_date_utc(finaltime)-parse_json_date_utc(starttime),format) 
+	--残りイベント時間　経過0時間にする
 	elaspted=get_timestring(0,format)
+	left=get_timestring(parse_json_date_utc(finaltime)-parse_json_date_utc(starttime),format)
+	
+	--または残り開始までの時間にする
+	--left=get_timestring(math.abs(lefttime(finaltime)),format)
+	end
 	end
 	if(tonumber(prog)>100)then
 	prog=100

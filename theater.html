@@ -32,9 +32,56 @@ function addc(a){
 
 function fixdatetime(){
 var ranking= $('#ranksel option:selected').text();
-for(var i=1;i<12;i++){ keika
+for(var i=1;i<12;i++){ //keika
 gdata[ranking][i][0]=moment(ibeend).add("Hours",-left[i]).format();
 }
+}
+
+function fildata(data){
+var ranking= $('#datafil option:selected').text();
+var rank= $('#ranksel option:selected').text();
+var datas=data[rank];
+var data2=[];
+if(ranking.match("位5イベ")){
+for(var i=2;i<datas[0].length;i++){
+data2[i]=[]
+data2[i][0]=i;
+data2[i][1]=datas[1][i];
+}
+
+if(ranking=="上位5イベ"){
+data2.sort(function(a,b){
+    if(a[1]>b[1]) return -1;
+    if(a[1]<b[1]) return 1;
+    return 0;
+});
+}
+
+if(ranking=="下位5イベ"){
+data2.sort(function(a,b){
+    if(a[1]>b[1]) return 1;
+    if(a[1]<b[1]) return -1;
+    return 0;
+});
+}
+var data3=[];
+for(var k=0;k<13;k++){
+data3[k]=[]
+for(var i=0;i<7;i++){
+if(i<2){
+data3[k][i]=datas[k][i];
+}
+else{
+data3[k][i]=datas[k][data2[i-2][0]];
+}}}
+
+var data4={};
+data4[rank]=data3;
+
+return data4;
+}
+
+return data;
 }
 
 function getdata(){
@@ -50,9 +97,13 @@ if(TZ){
 datefm="YY/MM/DD HH:mmZ";
 }
 
+
+var gdata2=fildata(gdata);
+
+
 var head="<thead><tr>";
 for(var i=0;i<ibelen;i++){
-head +="<th>"+gdata[ranking][0][i] +"</th>"
+head +="<th>"+gdata2[ranking][0][i] +"</th>"
 }
 head +="</tr></thead>";
 
@@ -67,28 +118,28 @@ body +="<tr>";
 
 diff="";
 pdiff="";
-var init=gdata[ranking][k][1];
+var init=gdata2[ranking][k][1];
 for(var i=0;i<ibelen;i++){
-var hiduke=gdata[ranking][k][i];
+var hiduke=gdata2[ranking][k][i];
 if(i==00){
 var ostime = document.getElementById("OS").checked;
 if(ostime){
-hiduke=moment(gdata[ranking][k][0]).format(datefm);
+hiduke=moment(gdata2[ranking][k][0]).format(datefm);
 }
 var utc = document.getElementById("useutc").checked;
 if(utc){
 var tz=document.tzone.owata.options[document.tzone.owata.selectedIndex].text;
 var tzm =tz.match(/\-?\d+/g);
 var tz= tzm[0]*1 +  tzm[1]/60;
-hiduke=moment.utc(gdata[ranking][k][0]).add("Hours",tz).format(datefm).replace("+00:00"," "+tzm[0] +":"+tzm[1]);
+hiduke=moment.utc(gdata2[ranking][k][0]).add("Hours",tz).format(datefm).replace("+00:00"," "+tzm[0] +":"+tzm[1]);
 }
 if(document.getElementById("usemoment").checked){
 var tzst=tzJAP[document.gm.gm.selectedIndex][0];
-hiduke=moment(gdata[ranking][k][0]).tz(tzst).format(datefm);
+hiduke=moment(gdata2[ranking][k][0]).tz(tzst).format(datefm);
 }
 }
-if(ptd &&i>1 &&init){diff=addc(gdata[ranking][k][1]-gdata[ranking][k][i]);}
-if(per &&i>1 &&init){pdiff=(gdata[ranking][k][1]/gdata[ranking][k][i]).toFixed(fixednum);}
+if(ptd &&i>1 &&init){diff=addc(gdata2[ranking][k][1]-gdata2[ranking][k][i]);}
+if(per &&i>1 &&init){pdiff=(gdata2[ranking][k][1]/gdata2[ranking][k][i]).toFixed(fixednum);}
 
 body +="<td>"+addc(hiduke) + (diff+pdiff).replace(/(.+)/,"($1)")+"</td>"
 }
@@ -106,24 +157,24 @@ body2 +="<tr>";
 
 diff="";
 pdiff="";
-var init=getdiff(gdata[ranking][k][1],gdata[ranking][k+1][1],i);
+var init=getdiff(gdata2[ranking][k][1],gdata2[ranking][k+1][1],i);
 for(var i=0;i<ibelen;i++){
-var nitugi=getdiff(gdata[ranking][k][i],gdata[ranking][k+1][i],i);
+var nitugi=getdiff(gdata2[ranking][k][i],gdata2[ranking][k+1][i],i);
 if(i==00){
 var ostime = document.getElementById("OS").checked;
 if(ostime){
-nitugi=moment(gdata[ranking][k][0]).format(datefm);
+nitugi=moment(gdata2[ranking][k][0]).format(datefm);
 }
 var utc = document.getElementById("useutc").checked;
 if(utc){
 var tz=document.tzone.owata.options[document.tzone.owata.selectedIndex].text;
 var tzm =tz.match(/\-?\d+/g);
 var tz= tzm[0]*1 +  tzm[1]/60;
-nitugi=moment.utc(gdata[ranking][k][0]).add("Hours",tz).format(datefm).replace("+00:00"," "+tzm[0] +":"+tzm[1]);
+nitugi=moment.utc(gdata2[ranking][k][0]).add("Hours",tz).format(datefm).replace("+00:00"," "+tzm[0] +":"+tzm[1]);
 }
 if(document.getElementById("usemoment").checked){
 var tzst=tzJAP[document.gm.gm.selectedIndex][0];
-nitugi=moment(gdata[ranking][k][0]).tz(tzst).format(datefm);
+nitugi=moment(gdata2[ranking][k][0]).tz(tzst).format(datefm);
 }
 }
 if(ptd &&i>1 &&init){diff=addc(nitugi-init);
@@ -412,6 +463,7 @@ return;
 -->
 </script>
 <body id="bg">
+
 <span id="ibe"></span><br>
     <div id='left'></div>
 <form name="rank" id="rank">
@@ -420,6 +472,11 @@ return;
 <option selected="selected">25百位</option>
 <option>5千位</option>
 <option>1万位</option>
+</select>
+<select name="sel" id="datafil" onChange="getdata()">
+<option selected="selected">最近5イベ</option>
+<option>上位5イベ</option>
+<option>下位5イベ</option>
 </select>
 <label for="pt"><input type="radio" checked="checked" name="hyouka" id="pt"onChange="getdata()">PTのみ</label>
 <label for="ptd"><input type="radio"  name="hyouka" id="ptd"onChange="getdata()">PT差</label>
@@ -542,4 +599,6 @@ return;
 <span id="RC">-----</span><br>
 </form>
 
+///ミリシタ周ねんよう<br>
+<a href="./theater_sp.html">＃周年用総合ひかく</a>
 </body></html>

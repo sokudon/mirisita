@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name=viewport content="width=device-width, initial-scale=1">
 <meta name="keywords" content="CGSS　ぼーだー　ボーダー　border">
-<title>>酢鶏無どんのみりしたかつどう(GOOGLECHART)</title>
+<title>酢鶏無どんのみりしたかつどう(GOOGLECHART)</title>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124912501-1"></script>
 <script>
@@ -73,7 +73,7 @@ start = new Date(start.format("YYYY-MM-01T00:00:00+09:00"));
 
 if(t=="制限なし"){
 for(var o=[],a="",i=0,r=0;i<e.length;i++){
-var dt=moment.utc(e[i][0]).add("Hours",9);
+var dt=moment.utc(e[i][0]);
 o[r]=i;r++;
 }}
 
@@ -99,7 +99,7 @@ if(t=="月次"){
 var mkmonth=[];
 var dra=(end-start)/30/1000/3600/24;
 for(var i=0;i<dra;i++){
-mkmonth[i] =moment(moment(start).add(i,'months').calendar('DD/MM/YYYY'));
+mkmonth[i] =moment(moment(start).add(i,'months'));
 }
 mkmonth.sort(
   function(a,b){
@@ -107,7 +107,7 @@ mkmonth.sort(
   }
 );
 for(var o=[],a="",i=0,r=0;i<e.length;i++){
-var dt=moment.utc(e[i][0]).add("Hours",9);
+var dt=moment.utc(e[i][0]);
 if(dt<mkmonth[r]){
 o[r]=i;r++;
 }
@@ -117,7 +117,7 @@ if(t=="クオーター(6月)"){
 var mkmonth=[];
 var dra=(end-start)/30/3/1000/3600/24;
 for(var i=0;i<dra;i++){
-mkmonth[i] =moment(moment(start).add(i*3,'months').calendar('DD/MM/YYYY'));
+mkmonth[i] =moment(moment(start).add(i*3,'months'));
 }
 mkmonth.sort(
   function(a,b){
@@ -125,7 +125,7 @@ mkmonth.sort(
   }
 );
 for(var o=[],a="",i=0,r=0;i<e.length;i++){
-var dt=moment.utc(e[i][0]).add("Hours",9);
+var dt=moment.utc(e[i][0]);
 if(dt<mkmonth[r]){
 o[r]=i;r++;
 }
@@ -137,7 +137,7 @@ if(t=="年次(6月)"){
 var mkmonth=[];
 var dra=(end-start)/30/12/1000/3600/24;
 for(var i=0;i<dra;i++){
-mkmonth[i] =moment(moment(start).add(i*12,'months').calendar('DD/MM/YYYY'));
+mkmonth[i] =moment(moment(start).add(i*12,'months'));
 }
 mkmonth.sort(
   function(a,b){
@@ -145,7 +145,7 @@ mkmonth.sort(
   }
 );
 for(var o=[],a="",i=0,r=0;i<e.length;i++){
-var dt=moment.utc(e[i][0]).add("Hours",9);
+var dt=moment.utc(e[i][0]);
 if(dt<mkmonth[r]){
 o[r]=i;r++;
 }}

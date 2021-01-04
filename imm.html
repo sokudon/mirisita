@@ -175,9 +175,20 @@ if(ts!=""){tstring=ts;}
 	tstring=tstring.replace("%K",esps);
 	tstring=tstring.replace("%LS",zan);
 	tstring=tstring.replace("%L",timetxt);
+	if(ostime){
 	tstring=tstring.replace("%S",moment(ibekaishi).format(date_fm.replace("%DST",addDST(ibekaishi))).replace(/UTC(.\d\d)(\d\d)/,"UTC$1:$2"));
 	tstring=tstring.replace("%E",moment(ibeowari).format(date_fm.replace("%DST",addDST(ibeowari))).replace(/UTC(.\d\d)(\d\d)/,"UTC$1:$2"));
-	tstring=tstring.replace("%V",prog2);
+	}
+	if(document.getElementById("usemoment").checked){
+	var tzst=tzJAP[document.gm.gm.selectedIndex][0];
+	tstring=tstring.replace("%S",moment(ibekaishi).tz(tzst).format(date_fm.replace("%DST",addDSTtz(ibekaishi,tzst))));
+	tstring=tstring.replace("%E",moment(ibeowari).tz(tzst).format(date_fm.replace("%DST",addDSTtz(ibeowari,tzst))));
+	}
+	else{
+	date_fm=date_fm.replace("%DST","");
+	tstring=tstring.replace("%S",moment.utc(ibekaishi).add("Hours",jtc).format(date_fm));
+	tstring=tstring.replace("%E",moment.utc(ibeowari).add("Hours",jtc).format(date_fm));	
+	}	tstring=tstring.replace("%V",prog2);
 	
 	tstring="<font size=\"20\">"+escapeHTML(tstring) +"</font>";
 	tstring=tstring.replace("%B",'<progress id="myProgress" value="' + prog +'" max="100"></progress>')
@@ -190,6 +201,13 @@ else{
 
 }
 
+
+function shortview(){
+document.getElementById("userdt").value="MM/DD HH:mmZ";
+document.getElementById("titlecs").value="%T%n現在:%N%n%KS%K(%P%%B)%n%LS%L%n開始:%S%n終了:%E%nイベ:%V";
+document.getElementById("CUSTOM").checked=true;
+return;
+}
 
 function addDST(t){
  var s="";
@@ -435,6 +453,7 @@ tmp=tmp.replace(/SUMMARY:うづき/,"SUMMARY:"+ibemie);
 TextDL(tmp,"hannyou_event.ics")
 }
 }
+
 
 function makeicsv(){
 var CSVHEAD=[
@@ -756,6 +775,7 @@ return;
 <p><b>表示おぷしょん</b><br>
 <label for="CUSTOM"><input type="checkbox" name="hyouka" id="CUSTOM">カスタム表示</label>
 <input type="text" name="" value="%T%n現在時刻:%N%n%KS%K(%P%%B)%n%LS%L%n開始時間:%S%n終了時間:%E%nイベ時間:%V" id="titlecs" maxlength="100"  size="100" ><br>
+ツイッタ用の短い表示<input type="Submit" value="SHORTVIEW" generate"="" onclick="shortview();return false">
 </p>
 </body>
 </html>

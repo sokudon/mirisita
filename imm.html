@@ -127,7 +127,8 @@ date_fm=date_fm.replace(/\(J.+/,"");
 	var timest = "<font size=\"20\">"
 	+"現在時刻:"
 	if(ostime){
-	timest += now.format(date_fm.replace("%DST",addDST(now)))+"<br>";
+	var ost=moment.tz.guess();
+	timest += now.format(date_fm.replace("%TZ","["+ost+"]").replace("%DST",addDST(now)))+"<br>";
 	+"<br>";
 	}
 	else if(document.getElementById("usemoment").checked){
@@ -136,6 +137,7 @@ date_fm=date_fm.replace(/\(J.+/,"");
 	timest +=  now.tz(tzst).format(date_fm.replace("%DST",addDSTtz(now,tzst)))+"<br>";
 	}
 	else{
+	date_fm=date_fm.replace("%TZ","");
 	date_fm=date_fm.replace("zz","");
 	date_fm=date_fm.replace("Z","[" + tz.match(/.\d\d:\d\d/) +"]");
 	date_fm=date_fm.replace("z","");
@@ -146,8 +148,8 @@ date_fm=date_fm.replace(/\(J.+/,"");
 	+zan +timetxt+"<br><br>";
 	
 	if(ostime){
-	timest +="開始時間:" +moment(ibekaishi).format(date_fm.replace("%DST",addDST(ibekaishi))).replace(/UTC(.\d\d)(\d\d)/,"UTC$1:$2")+"<br>";
-	timest +="終了時間:" +moment(ibeowari).format(date_fm.replace("%DST",addDST(ibeowari))).replace(/UTC(.\d\d)(\d\d)/,"UTC$1:$2")+"<br>";
+	timest +="開始時間:" +moment(ibekaishi).format(date_fm.replace("%TZ","["+ost+"]").replace("%DST",addDST(ibekaishi))).replace(/UTC(.\d\d)(\d\d)/,"UTC$1:$2")+"<br>";
+	timest +="終了時間:" +moment(ibeowari).format(date_fm.replace("%TZ","["+ost+"]").replace("%DST",addDST(ibeowari))).replace(/UTC(.\d\d)(\d\d)/,"UTC$1:$2")+"<br>";
 	}
 	else if(document.getElementById("usemoment").checked){
 	var tzst=tzJAP[document.gm.gm.selectedIndex][0];
@@ -172,14 +174,14 @@ if(ts!=""){tstring=ts;}
 
 	tstring=tstring.replace("%T",ibemie);
 	tstring=tstring.replace("%P",prog);
-	tstring=tstring.replace("%N",now.format(date_fm.replace("%DST",addDST(now))));
+	tstring=tstring.replace("%N",now.format(date_fm.replace("%TZ","["+ost+"]").replace("%DST",addDST(now))));
 	tstring=tstring.replace("%KS",kaishi);
 	tstring=tstring.replace("%K",esps);
 	tstring=tstring.replace("%LS",zan);
 	tstring=tstring.replace("%L",timetxt);
 	if(ostime){
-	tstring=tstring.replace("%S",moment(ibekaishi).format(date_fm.replace("%DST",addDST(ibekaishi))).replace(/UTC(.\d\d)(\d\d)/,"UTC$1:$2"));
-	tstring=tstring.replace("%E",moment(ibeowari).format(date_fm.replace("%DST",addDST(ibeowari))).replace(/UTC(.\d\d)(\d\d)/,"UTC$1:$2"));
+	tstring=tstring.replace("%S",moment(ibekaishi).format(date_fm.replace("%TZ","["+ost+"]").replace("%DST",addDST(ibekaishi))).replace(/UTC(.\d\d)(\d\d)/,"UTC$1:$2"));
+	tstring=tstring.replace("%E",moment(ibeowari).format(date_fm.replace("%TZ","["+ost+"]").replace("%DST",addDST(ibeowari))).replace(/UTC(.\d\d)(\d\d)/,"UTC$1:$2"));
 	}
 	if(document.getElementById("usemoment").checked){
 	var tzst=tzJAP[document.gm.gm.selectedIndex][0];
@@ -771,7 +773,7 @@ return;
 <input type="text" name="" value="" id="start"maxlength="30" size="20" ><br><br>終了時間(ISO8601かぐぐる入力で"日時,ないときは nullか 空欄 <a href="https://github.com/sokudon/deresute/wiki/OBS-EVENT-DURATION-TIMER(luascript)#JST">日時JSTもいちおう可能</a>)<br>
 <input type="text" name="" value="" id="end"maxlength="30" size="20" ><br>※ぐぐる入力で"日時"変換ででてくる　2020/04/05 15:00　とかはOS設定の現地時間になります（）<br><br>
 日時表示形式<input type="text" name="" value="" id="userdt" maxlength="30"width:200px;><a href="https://momentjs.com/docs/#/displaying/">もめんとの表示形式(例YYYY/MM-DD HH:mm:ssZz)</a>　
-%DST(独自拡張)で夏時間かどうか ％TZ都市名 Z時差　zタイム損名前<br><br>
+%DST(独自拡張)で夏時間かどうか ％TZ都市名(OS,もめんとのみ) Z時差　zタイム損名前<br><br>
 標準出力は"YYYY/MM/DD(ddd) HH:mm:ss(UTC,Z%DST)です(M$はYYYY/MM/DD(ddd) HH:mm:ss([GMT]Z))<br>
 <input type="Submit" value="HTMLに反映" Generate" onclick="setting();return false"> <input type="Submit" value="URLにしてブックマーク（）" Generate" onclick="document.location.href=url();return false"><br>
 </p>

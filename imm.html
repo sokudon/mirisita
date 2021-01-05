@@ -36,8 +36,8 @@ function get_count() {
 	if(t_offset<0){
 	t_offset_min=-t_offset_min;
 	}}
-   date_fm="YYYY/MM/DD(ddd) HH:mm:ssZ";
-   date_fm=date_fm.replace("Z","([" + tz.match(/G.T.\d\d:\d\d/) +"])");
+   date_fm="YYYY/MM/DD(ddd) HH:mm:ss([GMT]Z)";
+   date_fm=date_fm.replace("Z","[" + tz.match(/.\d\d:\d\d/) +"]");
 } 
    
       
@@ -135,7 +135,8 @@ date_fm=date_fm.replace(/\(J.+/,"");
 	timest +=  now.tz(tzst).format(date_fm.replace("%DST",addDSTtz(now,tzst)))+"<br>";
 	}
 	else{
-	date_fm=date_fm.replace("Z","([" + tz.match(/G.T.\d\d:\d\d/) +"])");
+	date_fm=date_fm.replace("zz","");
+	date_fm=date_fm.replace("Z","[" + tz.match(/.\d\d:\d\d/) +"]");
 	date_fm=date_fm.replace("z","");
 	timest += now.format(date_fm)+"<br>";
 	}
@@ -620,13 +621,17 @@ return;
 <form name="tzone">
 
 <p align="center"><a href="javascript:toTwitter()"><img src="./imm_files/saved_resource" alt="Send to Twitter" width="61" height="61" border="0"></a></p>
-<b>タイムゾーン設定</b><br>
-<label for="OS"><input type="radio" checked="checked" name="hyouka" id="OS">OSのタイムゾーンを優先する</label>
-<label for="useutc"><input type="radio" name="hyouka" id="useutc"><a href="https://support.microsoft.com/ja-jp/help/973627/microsoft-time-zone-index-values">M$</a>のUTC固定時差情報を使う</label>
-<label for="usemoment"><input type="radio" name="hyouka" id="usemoment"><a href="https://momentjs.com/timezone/">もめんと</a>タイムゾーン（国）を使う</label><br>
 
+<p align=="left"><h4>タイムゾーン設定</h4>
+<table border="1">
+<tr><th rowspan="2">
+<label for="OS"><input type="radio" checked="checked" name="hyouka" id="OS">OSのタイムゾーンを優先する　</label><br>
+<label for="useutc"><input type="radio" name="hyouka" id="useutc"><a href="https://support.microsoft.com/ja-jp/help/973627/microsoft-time-zone-index-values">M$</a>のUTC固定時差情報を使う　</label><br>
+<label for="usemoment"><input type="radio" name="hyouka" id="usemoment"><a href="https://momentjs.com/timezone/">もめんと</a>タイムゾーン（国）を使う</label>
+</th>
+<th align=="left">
+<span id="msc"><font color="black"></span>//M$UTC固定時差設定</span><br>
 <form name="ms" id="msdiff">
-//UTCこていじさ<br>
 <select name="owata" id="utcdiff">
 <option>(GMT-12:00)国際日付変更線西側 日付変更線標準時,M$0</option>
 <option>(GMT-11:00)ミッドウェー島、サモア サモア標準時,M$1</option>
@@ -724,21 +729,24 @@ return;
 <option>(GMT+12:00)Petropavlovsk Kamchatsky カムチャツカ標準時,M$80000052</option>
 </select>
 </form>
-
+</th></tr>
+<tr><th align=="left">
+<span id="mtc"><font color="black"></span>//もーめんと時差設定（国都市をえらんでください）</font><br>
 <form name="gm" id="moment">
-//もめんとたいむぞーん<br>
 <select name="gm" id="sel1">
 </select><br>
-<input type="text" name="" value="日本" id="kuni" size="" maxlength=""><br>
+<input type="text" name="" value="日本" id="kuni" size="" maxlength="">
 <input type="Submit" value="検索" Generate" onclick="settz();return false"><br>
-<span id="RC">-----</span><br>
+<span id="RC">-----</span>
 </form>
+</th></tr></table>
+</p>
 
-<b>カレンダーアプリに登録する(iCalendar/CSV作成):</b>
+<h4>カレンダーアプリに登録する(iCalendar/CSV作成):</h4>
 <input type="Submit" value="iCalendar(推奨)" generate"="" onclick="makeical();return false">
 <input type="Submit" value="OutlookCSV(※OS現地時間になります)" generate"="" onclick="makeicsv();return false"><br><br>
 
-<p><b>OBSタイマープラグイン生成:</b><br>
+<p><h4>OBSタイマープラグイン生成:</h4>
 <input type="Submit" value="OBSLUAtimerplugin" generate"="" onclick="makeplugin();return false">
 <a href="https://photos.app.goo.gl/anwmTnhhAua4p8aP9">obs設定さんぷる</a><select name="obs" id="obstxt">
 <option value="">ミリ縦</option>
@@ -751,31 +759,35 @@ return;
 </select>
 <a href="../OBSdere_sample.txt">ユーザー設定:</a><input type="text" name="" value="" id="user" maxlength="200"  size="50" ><br>
 </p>
-<p><b>pythonタイマー生成(要PY3.8以上):</b>
+
+<p><h4>pythonタイマー生成(要PY3.8以上):</h4>
 <input type="Submit" value="python" generate"="" onclick="makepy();return false">
 </p>
 
-<p><b>クロマキー合成、背景色</b>
+<p><h4>たいまー設定（たいとる、かいししゅうりょうじかん）</h4>
+タイトル<br><input type="text" name="" value="" id="title" maxlength="50" size="100" ><br><br>
+開始時間(ISO8601かぐぐる入力で"日時,ないときは null か 空欄 <a href="https://github.com/sokudon/deresute/wiki/OBS-EVENT-DURATION-TIMER(luascript)#JST">日時JSTもいちおう可能</a>)<br>
+<input type="text" name="" value="" id="start"maxlength="30" size="20" ><br><br>終了時間(ISO8601かぐぐる入力で"日時,ないときは nullか 空欄 <a href="https://github.com/sokudon/deresute/wiki/OBS-EVENT-DURATION-TIMER(luascript)#JST">日時JSTもいちおう可能</a>)<br>
+<input type="text" name="" value="" id="end"maxlength="30" size="20" ><br>※ぐぐる入力で"日時"変換ででてくる　2020/04/05 15:00　とかはOS設定の現地時間になります（）<br><br>
+日時表示形式<input type="text" name="" value="" id="userdt" maxlength="30"width:200px;><a href="https://momentjs.com/docs/#/displaying/">もめんとの表示形式(例YYYY/MM-DD HH:mm:ssZz)</a>　%DST(独自拡張)で夏時間かどうか Z時差　zタイム損名前<br><br>
+標準出力は"YYYY/MM/DD(ddd) HH:mm:ss(UTC,Z%DST)です(M$はYYYY/MM/DD(ddd) HH:mm:ss([GMT]Z))<br>
+<input type="Submit" value="HTMLに反映" Generate" onclick="setting();return false"> <input type="Submit" value="URLにしてブックマーク（）" Generate" onclick="document.location.href=url();return false"><br>
+</p>
+
+<p><h4>表示おぷしょん</h4>
+<label for="CUSTOM"><input type="checkbox" name="hyouka" id="CUSTOM">カスタム表示</label>
+<input type="text" name="" value="%T%n現在時刻:%N%n%KS%K(%P%%B)%n%LS%L%n開始時間:%S%n終了時間:%E%nイベ時間:%V" id="titlecs" maxlength="100"  size="100" ><br>
+ツイッタ用の短い表示<input type="Submit" value="SHORTVIEW" generate"="" onclick="shortview();return false">
+</p>
+
+
+<p><h4>クロマキー合成、背景色</h4>
     <input type="button" value="緑色に変更する" onclick="changeBoxColor(&#39;#008000&#39;);">
     <input type="button" value="青色に変更する" onclick="changeBoxColor(&#39;#0000ff&#39;);">
     <input type="button" value="黄色に変更する" onclick="changeBoxColor(&#39;#ffff00&#39;);">
     <input type="button" value="赤色に変更する" onclick="changeBoxColor(&#39;#ff0000&#39;);">
     <input type="button" value="淡い緑色に戻す" onclick="changeBoxColor(&#39;#ccffcc&#39;);">
     <input type="button" value="白色に戻す"     onclick="changeBoxColor(&#39;#ffffff&#39;);">
-</p>
-<p><b>たいまー設定（たいとる、かいししゅうりょうじかん）</b><br>
-タイトル<input type="text" name="" value="" id="title" maxlength="50" size="100" ><br>
-開始時間<input type="text" name="" value="" id="start"maxlength="30" size="20" >(ISO8601かぐぐる入力で"日時,ないときは null か 空欄 <a href="https://github.com/sokudon/deresute/wiki/OBS-EVENT-DURATION-TIMER(luascript)#JST">日時JSTもいちおう可能</a>)<br>
-終了時間<input type="text" name="" value="" id="end"maxlength="30" size="20" >(ISO8601かぐぐる入力で"日時,ないときは nullか 空欄 <a href="https://github.com/sokudon/deresute/wiki/OBS-EVENT-DURATION-TIMER(luascript)#JST">日時JSTもいちおう可能</a>)<br>
-※ぐぐる入力で"日時"変換ででてくる　2020/04/05 15:00　とかはOSの現地時間になります（）<br>
-日時表示形式<input type="text" name="" value="" id="userdt" maxlength="30"width:200px;><a href="https://momentjs.com/docs/#/displaying/">もめんとの表示形式(例YYYY/MM-DD HH:mm:ssZz)</a>　%DST(独自拡張)で夏時間かどうか Z時差　zタイム損名前<br>
-標準出力は"YYYY/MM/DD(ddd) HH:mm:ss(UTC,Z%DST)です<br>
-<input type="Submit" value="HTMLに反映" Generate" onclick="setting();return false"> <input type="Submit" value="URLにしてブックマーク（）" Generate" onclick="document.location.href=url();return false"><br>
-</p>
-<p><b>表示おぷしょん</b><br>
-<label for="CUSTOM"><input type="checkbox" name="hyouka" id="CUSTOM">カスタム表示</label>
-<input type="text" name="" value="%T%n現在時刻:%N%n%KS%K(%P%%B)%n%LS%L%n開始時間:%S%n終了時間:%E%nイベ時間:%V" id="titlecs" maxlength="100"  size="100" ><br>
-ツイッタ用の短い表示<input type="Submit" value="SHORTVIEW" generate"="" onclick="shortview();return false">
 </p>
 </body>
 </html>

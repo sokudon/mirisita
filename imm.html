@@ -132,6 +132,7 @@ date_fm=date_fm.replace(/\(J.+/,"");
 	}
 	else if(document.getElementById("usemoment").checked){
 	var tzst=tzJAP[document.gm.gm.selectedIndex][0];
+	date_fm=date_fm.replace("%TZ","["+tzst+"]");
 	timest +=  now.tz(tzst).format(date_fm.replace("%DST",addDSTtz(now,tzst)))+"<br>";
 	}
 	else{
@@ -769,7 +770,8 @@ return;
 開始時間(ISO8601かぐぐる入力で"日時,ないときは null か 空欄 <a href="https://github.com/sokudon/deresute/wiki/OBS-EVENT-DURATION-TIMER(luascript)#JST">日時JSTもいちおう可能</a>)<br>
 <input type="text" name="" value="" id="start"maxlength="30" size="20" ><br><br>終了時間(ISO8601かぐぐる入力で"日時,ないときは nullか 空欄 <a href="https://github.com/sokudon/deresute/wiki/OBS-EVENT-DURATION-TIMER(luascript)#JST">日時JSTもいちおう可能</a>)<br>
 <input type="text" name="" value="" id="end"maxlength="30" size="20" ><br>※ぐぐる入力で"日時"変換ででてくる　2020/04/05 15:00　とかはOS設定の現地時間になります（）<br><br>
-日時表示形式<input type="text" name="" value="" id="userdt" maxlength="30"width:200px;><a href="https://momentjs.com/docs/#/displaying/">もめんとの表示形式(例YYYY/MM-DD HH:mm:ssZz)</a>　%DST(独自拡張)で夏時間かどうか Z時差　zタイム損名前<br><br>
+日時表示形式<input type="text" name="" value="" id="userdt" maxlength="30"width:200px;><a href="https://momentjs.com/docs/#/displaying/">もめんとの表示形式(例YYYY/MM-DD HH:mm:ssZz)</a>　
+%DST(独自拡張)で夏時間かどうか ％TZ都市名 Z時差　zタイム損名前<br><br>
 標準出力は"YYYY/MM/DD(ddd) HH:mm:ss(UTC,Z%DST)です(M$はYYYY/MM/DD(ddd) HH:mm:ss([GMT]Z))<br>
 <input type="Submit" value="HTMLに反映" Generate" onclick="setting();return false"> <input type="Submit" value="URLにしてブックマーク（）" Generate" onclick="document.location.href=url();return false"><br>
 </p>

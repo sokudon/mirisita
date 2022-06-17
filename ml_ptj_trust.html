@@ -30,7 +30,7 @@ var ibept=806;
 
 
 var target=document.getElementById("val").value;
-st="<table id=\"sampleTable\" class=\"tablesorter\"><thead><tr><th>2M　</th><th>4M　</th><th>6M　</th><th>MM　</th><th>2M+　</th><th>イベ　</th><th>曲回数　</th></tr></thead><tbody>";
+st="<table id=\"sampleTable\" class=\"tablesorter\"><thead><tr><th>2M　</th><th>2M+　</th><th>4M　</th><th>6M　</th><th>MM　</th><th>イベ　</th><th>曲回数　</th></tr></thead><tbody>";
 
 if(document.getElementById("work").checked){
 ibept=893;
@@ -54,11 +54,15 @@ ptt.ibe=ibept;
 
 for(var i=0;i<pat.length;i++){
 if(target==pat[i][5]){
-pts= ptt["2m"]*pat[i][0]+ptt["4m"]*pat[i][1]+ptt["6m"]*pat[i][2]+ptt["mm"]*pat[i][3]+ptt["2m+"]*pat[i][4];
+pts= ptt["2m"]*pat[i][0]+ptt["4m"]*pat[i][2]+ptt["6m"]*pat[i][3]+ptt["mm"]*pat[i][4]+ptt["2m+"]*pat[i][1];
 st += "<tr><td>" + pat[i][0] +"</td><td>" +  pat[i][1] +"</td><td>" +  pat[i][2] +"</td><td>" + pat[i][3] +"</td><td>" + pat[i][4] +"</td><td>" + div+"</td><td>"+(pat[i][0]+pat[i][1]+pat[i][2]+pat[i][3]+pat[i][4]+div) +"</td></tr>";
 }}
 st +="</tbody></table>";
 st += "イベ曲以外のこり:" +pts;
+if(document.getElementById("work").checked){
+st=st.replace("イベ曲以外","893pt以外");
+
+}
 
 if(ibept==undefined){
 ibept="イベントPTが不明です、ボーナス値を正しく入れてください（）";
@@ -122,7 +126,7 @@ var currentSort=[[6,0]];//ぼだ
 PTポイント（1.5倍時）；{"2m":53,"4m":74,"6m":96,"mm":128,"2m+":93,"ibe":806,"mmWork300":893}<br>
 <a href="./trust.csv">検索可能な数値＋イベ倍数</a><br>
 <label for="val">検索スコア:<input type="text" id="val"><br></label>
-<label for="ibe">いべ曲なし:<input type="radio" name="ibew" id="iben"></label><br>
+<label for="iben">いべ曲なし:<input type="radio" name="ibew" id="iben"></label><br>
 <label for="ibe">いべ曲 806pt:<input type="radio" name="ibew" checked="checked" id="ibe"></label><br>
 <label for="work">お仕事x３００xMM 893pt:<input type="radio" name="ibew" id="work"></label>
 <input type="Submit" value="Convert" generate"="" onclick="stringfilter();return false">

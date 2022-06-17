@@ -39,7 +39,8 @@ st=st.replace("イベ","893　");
 
 var div=0;
 
-if(document.getElementById("ibe").checked){
+if(document.getElementById("iben").checked){}
+else{
 div=Math.floor(target/ibept);
 target = target - div*ibept;
 if(target!=0){
@@ -121,6 +122,7 @@ var currentSort=[[6,0]];//ぼだ
 PTポイント（1.5倍時）；{"2m":53,"4m":74,"6m":96,"mm":128,"2m+":93,"ibe":806,"mmWork300":893}<br>
 <a href="./trust.csv">検索可能な数値＋イベ倍数</a><br>
 <label for="val">検索スコア:<input type="text" id="val"><br></label>
+<label for="ibe">いべ曲なし:<input type="radio" name="ibew" id="iben"></label><br>
 <label for="ibe">いべ曲 806pt:<input type="radio" name="ibew" checked="checked" id="ibe"></label><br>
 <label for="work">お仕事x３００xMM 893pt:<input type="radio" name="ibew" id="work"></label>
 <input type="Submit" value="Convert" generate"="" onclick="stringfilter();return false">

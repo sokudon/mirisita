@@ -1,0 +1,660 @@
+
+<!-- saved from url=(0041)http://sokudon.s17.xrea.com/ibetimer.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>みりしたすぷれっどわーるどたいまー改</title>
+</head>
+<link href="./imm_files/tbl.css" type="text/css" rel="stylesheet">
+<script src="./imm_files/jquery.min.js"></script>
+<script src="./highcharts.js"></script>
+<script src="https://momentjs.com/downloads/moment.js"></script>
+<script src="https://momentjs.com/downloads/moment-timezone-with-data-10-year-range.js"></script>
+<script src="https://script.googleusercontent.com/macros/echo?user_content_key=neQsBAoUGLNwAMfi9tKMMQb7pL3eKZgieWw-KwkS615-QJvltxjgUGTIdzQ36Gfhc7hqJQ81GuwDhqmihtmGPO0FYr8o9ef4m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnPO8A5WGmHEYvXG8Y1Tci8e6eyyj84BKpuUBxI6mD1fVD47JMB-rgusYZpTak_o22Q&lib=MLzsP3I93TuNl8NWIIyRnT4FpGDg2vV9V"></script>
+<script src="https://script.google.com/macros/s/AKfycbz-F-hawnNTLH9d-fKeX134Qlqf0qOspM3QqviYco-eLIaaIUSd/exec"></script>
+<script src="./imm_files/exec"></script><script>
+<!--
+var keika=["最終0時","12日17時","11日17時","10日17時","9日17時","8日17時","7日17時","6日17時","5日17時","4日17時","3日17時","2日17時","1日17時","0日17時"];
+var left=["",0,
+7,
+31,
+55,
+79,
+103,
+127,
+151,
+175,
+199,
+223,
+247,
+271,
+295];
+var datefm="YY/MM/DD HH:mm";
+var ibelen=4;//過去イベどこまで
+var rowlen=15;
+var fixednum=3;//比率の少数台何位
+
+window.onload = function() {
+document.getElementById("ibe").innerHTML=ibe;
+createSelectBox();
+document.gm.gm.selectedIndex=511; get_web_para();
+getdata();
+
+}
+function escapeHTML(html) {
+  return jQuery('<div>').text(html).html();
+}
+function get_web_para(){
+var url=document.location.href;
+var s="";
+var n = url.indexOf("#");
+if (n > -1) {
+s = url.substring(n+1,url.length);
+url= url.substring(0,n);
+var nn=s.split(",");
+document.getElementById("songpt").value=escapeHTML(decodeURIComponent(nn[0]));//utf8
+}
+return;
+}
+
+//正規でカンマつける
+function addc(a){
+	return String(a).replace(/(\d)(?=(\d\d\d)+(?!\d))/g,'$1,');
+}
+
+function fixdatetime(){
+var ranking= $('#ranksel option:selected').text();
+for(var i=1;i<rowlen;i++){ keika
+gdata[ranking][i][0]=moment(ibeend).add("Hours",-left[i]).format();
+}
+}
+
+function getdata(){
+
+document.getElementById("intl").innerHTML=moment.tz.guess();
+var ranking= $('#ranksel option:selected').text();
+
+fixdatetime();
+
+var TZ=document.getElementById("TZ").checked;
+datefm="YY/MM/DD HH:mm";
+if(TZ){
+datefm="YY/MM/DD HH:mmZ";
+}
+
+var head="<thead><tr>";
+for(var i=0;i<ibelen;i++){
+head +="<th>"+gdata[ranking][0][i] +"</th>"
+}
+head +="</tr></thead>";
+
+var body="<tbody>";
+var diff="";
+var pdiff="";
+var ptd=document.getElementById("ptd").checked;
+var per=document.getElementById("ptp").checked;
+
+for(var k=1;k<rowlen;k++){
+body +="<tr>";
+
+diff="";
+pdiff="";
+var init=gdata[ranking][k][1];
+for(var i=0;i<ibelen;i++){
+var hiduke=gdata[ranking][k][i];
+if(i==00){
+var ostime = document.getElementById("OS").checked;
+if(ostime){
+hiduke=moment(gdata[ranking][k][0]).format(datefm);
+}
+var utc = document.getElementById("useutc").checked;
+if(utc){
+var tz=document.tzone.owata.options[document.tzone.owata.selectedIndex].text;
+var tzm =tz.match(/\-?\d+/g);
+var tz= tzm[0]*1 +  tzm[1]/60;
+hiduke=moment.utc(gdata[ranking][k][0]).add("Hours",tz).format(datefm).replace("+00:00"," "+tzm[0] +":"+tzm[1]);
+}
+if(document.getElementById("usemoment").checked){
+var tzst=tzJAP[document.gm.gm.selectedIndex][0];
+hiduke=moment(gdata[ranking][k][0]).tz(tzst).format(datefm);
+}
+}
+if(ptd &&i>1 &&init){diff=addc((gdata[ranking][k][1]-gdata[ranking][k][i]).toFixed(fixednum));}
+if(per &&i>1 &&init){pdiff=(gdata[ranking][k][1]/gdata[ranking][k][i]).toFixed(fixednum);}
+
+body +="<td>"+addc(hiduke) + (diff+pdiff).replace(/(.+)/,"($1)")+"</td>"
+}
+body +="</tr>";
+}
+body+="</tbody>";
+
+var html = "<table boder=\"1\"class=\"border\">"+head +body +"</table>";
+
+var body2="";
+var data=[1,2];
+var ii=0;
+for(var k=1;k<rowlen;k++){
+body2 +="<tr>";
+
+diff="";
+pdiff="";
+var init=getdiff(gdata[ranking][k][1],gdata[ranking][k+1][1],i);
+for(var i=0;i<ibelen;i++){
+var nitugi=getdiff(gdata[ranking][k][i],gdata[ranking][k+1][i],i);
+if(i==00){
+var ostime = document.getElementById("OS").checked;
+if(ostime){
+nitugi=moment(gdata[ranking][k][0]).format(datefm);
+}
+var utc = document.getElementById("useutc").checked;
+if(utc){
+var tz=document.tzone.owata.options[document.tzone.owata.selectedIndex].text;
+var tzm =tz.match(/\-?\d+/g);
+var tz= tzm[0]*1 +  tzm[1]/60;
+nitugi=moment.utc(gdata[ranking][k][0]).add("Hours",tz).format(datefm).replace("+00:00"," "+tzm[0] +":"+tzm[1]);
+}
+if(document.getElementById("usemoment").checked){
+var tzst=tzJAP[document.gm.gm.selectedIndex][0];
+nitugi=moment(gdata[ranking][k][0]).tz(tzst).format(datefm);
+}
+}
+if(ptd &&i>1 &&init){diff=addc(nitugi-init);
+}
+if(per &&i>1 &&init){pdiff=(nitugi/init).toFixed(fixednum);}
+
+data[ii]=nitugi;ii++;
+body2 +="<td>"+addc(nitugi) + (diff+pdiff).replace(/(.+)/,"($1)")+"</td>"
+}
+body2 +="</tr>";
+}
+
+var datas={};
+var k=0;var j=0;
+for(var i=0;i<data.length;i++,j++){
+var ii=i%ibelen;
+var ij=Math.floor(i/ibelen);
+if(datas[ii]==undefined){
+datas[ii]=[];
+}
+datas[ii][ij]=data[i];
+}
+body2 +="<tr><td>速度傾向</td>";
+var chartstag='<td data-sparkline="MASTERDATA"/>'
+for(var i=1;i<ibelen;i++){
+body2 +=chartstag.replace("MASTERDATA", JSON.stringify(datas[i]).replace(/[\[\]"]/gm,""));
+}
+body2+="</tr></tbody>";
+
+var html2 = "<table boder=\"1\"class=\"border\">"+head +body2 +"</table>";
+
+
+var noruma = 2147;//MM*4(2148)	おすすめ15倍(1071)	SV15倍ライブ(893)
+var tmp =document.getElementById("songpt").value;//MM*4(2148)	おすすめ15倍(1071)	SV15倍ライブ(893)
+if(tmp.match(/^\d+(\.\d+)?$/)){
+noruma=tmp;
+}
+
+
+var body2="";
+var data=[1,2];
+var ii=0;
+for(var k=1;k<rowlen;k++){
+body2 +="<tr>";
+
+diff="";
+pdiff="";
+var init=getdiff(gdata[ranking][k][1],gdata[ranking][k+1][1],i);
+init = (init/noruma).toFixed(2);
+for(var i=0;i<ibelen;i++){
+var nitugi=getdiff(gdata[ranking][k][i],gdata[ranking][k+1][i],i);
+nitugi = (nitugi/noruma).toFixed(2);
+if(i==00){
+var ostime = document.getElementById("OS").checked;
+if(ostime){
+nitugi=moment(gdata[ranking][k][0]).format(datefm);
+}
+var utc = document.getElementById("useutc").checked;
+if(utc){
+var tz=document.tzone.owata.options[document.tzone.owata.selectedIndex].text;
+var tzm =tz.match(/\-?\d+/g);
+var tz= tzm[0]*1 +  tzm[1]/60;
+nitugi=moment.utc(gdata[ranking][k][0]).add("Hours",tz).format(datefm).replace("+00:00"," "+tzm[0] +":"+tzm[1]);
+}
+if(document.getElementById("usemoment").checked){
+var tzst=tzJAP[document.gm.gm.selectedIndex][0];
+nitugi=moment(gdata[ranking][k][0]).tz(tzst).format(datefm);
+}
+}
+if(ptd &&i>1 &&init){diff=addc((nitugi-init).toFixed(fixednum));
+}
+if(per &&i>1 &&init){pdiff=(nitugi/init).toFixed(fixednum);}
+
+data[ii]=nitugi;ii++;
+body2 +="<td>"+addc(nitugi) + (diff+pdiff).replace(/(.+)/,"($1)")+"</td>"
+}
+body2 +="</tr>";
+}
+
+var datas={};
+var k=0;var j=0;
+for(var i=0;i<data.length;i++,j++){
+var ii=i%ibelen;
+var ij=Math.floor(i/ibelen);
+if(datas[ii]==undefined){
+datas[ii]=[];
+}
+datas[ii][ij]=data[i];
+}
+body2 +="<tr><td>速度傾向</td>";
+var chartstag='<td data-sparkline="MASTERDATA"/>'
+for(var i=1;i<ibelen;i++){
+body2 +=chartstag.replace("MASTERDATA", JSON.stringify(datas[i]).replace(/[\[\]"]/gm,""));
+}
+body2+="</tr></tbody>";
+
+var html3 = "<table boder=\"1\"class=\"border\">"+head +body2 +"</table>";
+
+
+document.getElementById("ibed").innerHTML=html +"<br>//速度÷曲のポイント＝周回回数　↓で1回あたりPT変更可能" + html3;
+
+/**
+ * Create a constructor for sparklines that takes some sensible defaults and merges in the individual
+ * chart options. This function is also available from the jQuery plugin as $(element).highcharts('SparkLine').
+ */
+Highcharts.SparkLine = function (a, b, c) {
+    var hasRenderToArg = typeof a === 'string' || a.nodeName,
+        options = arguments[hasRenderToArg ? 1 : 0],
+        defaultOptions = {
+            chart: {
+                renderTo: (options.chart && options.chart.renderTo) || this,
+                backgroundColor: null,
+                borderWidth: 0,
+                type: 'area',
+                margin: [2, 0, 2, 0],
+                width: 120,
+                height: 20,
+                style: {
+                    overflow: 'visible'
+                },
+
+                // small optimalization, saves 1-2 ms each sparkline
+                skipClone: true
+            },
+            title: {
+                text: ''
+            },
+            credits: {
+                enabled: false
+            },
+            xAxis: {
+                labels: {
+                    enabled: false
+                },
+                title: {
+                    text: null
+                },
+                startOnTick: false,
+                endOnTick: false,
+                tickPositions: []
+            },
+            yAxis: {
+                endOnTick: false,
+                startOnTick: false,
+                labels: {
+                    enabled: false
+                },
+                title: {
+                    text: null
+                },
+                tickPositions: [0]
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                hideDelay: 0,
+                outside: true,
+                shared: true
+            },
+            plotOptions: {
+                series: {
+                    animation: false,
+                    lineWidth: 1,
+                    shadow: false,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    marker: {
+                        radius: 1,
+                        states: {
+                            hover: {
+                                radius: 2
+                            }
+                        }
+                    },
+                    fillOpacity: 0.25
+                },
+                column: {
+                    negativeColor: '#910000',
+                    borderColor: 'silver'
+                }
+            }
+        };
+
+    options = Highcharts.merge(defaultOptions, options);
+
+    return hasRenderToArg ?
+        new Highcharts.Chart(a, options, c) :
+        new Highcharts.Chart(options, b);
+};
+
+var start = +new Date(),
+    $tds = $('td[data-sparkline]'),
+    fullLen = $tds.length,
+    n = 0;
+    
+// Creating 153 sparkline charts is quite fast in modern browsers, but IE8 and mobile
+// can take some seconds, so we split the input into chunks and apply them in timeouts
+// in order avoid locking up the browser process and allow interaction.
+function doChunk() {
+    var time = +new Date(),
+        i,
+        len = $tds.length,
+        $td,
+        stringdata,
+        arr,
+        data,
+        chart;
+
+    for (i = 0; i < len; i += 1) {
+        $td = $($tds[i]);
+        stringdata = $td.data('sparkline');
+        arr = stringdata.split('; ');
+        data = $.map(arr[0].split(','), parseFloat);
+        chart = {};
+
+        if (arr[1]) {
+            chart.type = arr[1];
+        }
+        $td.highcharts('SparkLine', {
+            series: [{
+                data: data,
+                pointStart: 1
+            }],
+            tooltip: {
+                ///headerFormat: '<span style="font-size: 10px">' + $td.parent().find('th').html() + ':</span><br/>',
+                pointFormat: '<b>{point.y}</b> pt'
+            },
+            chart: chart
+        });
+
+        n += 1;
+
+        // If the process takes too much time, run a timeout to allow interaction with the browser
+        if (new Date() - time > 500) {
+            $tds.splice(0, i + 1);
+            setTimeout(doChunk, 0);
+            break;
+        }
+
+        // Print a feedback on the performance
+        if (n === fullLen) {
+            $('#result').html('Generated ' + fullLen + ' sparklines in ' + (new Date() - start) + ' ms');
+        }
+    }
+}
+doChunk();
+
+}
+
+
+function getdiff(a,b,i){
+if(i==0){return a;}
+if(a==""){ return "";}
+if(b==""){ return "";}
+return a-b;
+}
+
+
+setInterval("get_count()",1000);
+function get_count() {
+
+var TZ=document.getElementById("TZ").checked;
+var dtf="YYYY/MM/DD HH:mm";
+if(TZ){
+dtf="YYYY/MM/DD HH:mmZ";
+}
+var t=moment(ibeend);
+var now=moment();
+var left_time=t-now;t= moment(left_time).valueOf()/1000;
+var timetxt= Math.floor(t/(3600*24)) +"日" +Math.floor( (t%(3600*24))/3600) + "時間"+Math.floor((t%3600)/60)+ "分" +Math.floor(t%60)+ "秒";
+var datend=moment(ibeend).format(dtf);
+var datest=moment(ibestart).format(dtf);
+
+
+var prog=(moment.utc()-moment.utc(ibestart))/(moment.utc(ibeend)-moment.utc(ibestart))*100;
+
+var dstst="";
+var dsten="";
+var ostime = document.getElementById("OS").checked;
+if(ostime){
+if(moment(ibestart).isDST()){dstst="(DST,夏時間)";}
+if(moment(ibeend).isDST()){dsten="(DST,夏時間)";}
+}
+var utc = document.getElementById("useutc").checked;
+if(utc){
+var tz=document.tzone.owata.options[document.tzone.owata.selectedIndex].text;
+var tzm =tz.match(/\-?\d+/g);
+var tz= tzm[0]*1 +  tzm[1]/60;
+datend=moment.utc(ibeend).add("Hours",tz).format(dtf).replace("+00:00"," "+tzm[0] +":"+tzm[1]);
+datest=moment.utc(ibestart).add("Hours",tz).format(dtf).replace("+00:00"," "+tzm[0]+":"+tzm[1]);
+}
+if(document.getElementById("usemoment").checked){
+var tzst=tzJAP[document.gm.gm.selectedIndex][0];
+if(moment(ibestart).tz(tzst).isDST()){dstst="(DST,夏時間)";}
+if(moment(ibeend).tz(tzst).isDST()){dsten="(DST,夏時間)";}
+datest=moment(ibestart).tz(tzst).format(dtf);
+datend=moment(ibeend).tz(tzst).format(dtf);
+}
+
+var zan="開始:"+datest +dstst +"<br>"
++"終了:"+datend +dsten +"まで残り"+timetxt +"("+prog.toFixed(2)+"%";
+zan+='<progress id="myProgress" value="' + prog +'" max="100"></progress>' +")<br>";
+if(left_time<0){
+zan ="終了:"+datend +dsten + "に終了しました～";
+}
+if(ibeend==""){
+zan ="イベント終了日が未確定です"
+}
+
+document.getElementById("left").innerHTML= zan;
+}
+
+
+function createSelectBox(){
+
+  //連想配列をループ処理で値を取り出してセレクトボックスにセットする
+  for(var i=0;i<tzJAP.length;i++){
+    let op = document.createElement("option");
+    op.value = "";  //value値
+    op.text = i+";"+tzJAP[i][0]+"|"+tzJAP[i][1];   //テキスト値
+    if(op.text.match(/GMT[\+/]/)){
+    op.text =op.text.replace(/(GMT[\+\-])/,"$1!")
+    op.text =op.text.replace("+!","-");
+    op.text =op.text.replace("-!","+");
+    }
+    document.getElementById("sel1").appendChild(op);
+  }
+
+};
+
+function settz(){
+var s=document.getElementById("kuni").value;
+ s=s.toLowerCase();
+for(var i=0;i<tzJAP.length;i++){
+ var cmp=document.gm.gm.options[i].text.toLowerCase();
+ if(cmp.indexOf(s)>=0){
+document.gm.gm.selectedIndex=i;
+break;
+}}
+var tmp="";
+
+for(var i=0;i<tzJAP.length;i++){
+ var cmp=document.gm.gm.options[i].text.toLowerCase();
+ if(cmp.indexOf(s)>=0){
+ tmp+= document.gm.gm.options[i].text+"<br>";
+}}
+document.getElementById("RC").innerHTML=tmp;
+return;
+}
+-->
+</script>
+<body id="bg">
+<a href="http://sokudon.s17.xrea.com/neta/mironsyunen7/mirisitapt5.html">#周年アニバーサリーノルマぐらふ</a>  
+<a href="http://sokudon.s17.xrea.com/neta/mironsyunen7/Highstock%20compare.html">＃周年アニバーサリーノルマ例年ひかく</a><br>
+<a href="http://sokudon.s17.xrea.com/neta/theater_sp.html">総合ランキング推移)</a><br>
+
+<!--
+<a href="http://sokudon.s17.xrea.com/neta/mirisitaptidol100.html">＃あいどるべつ100位日速</a>
+<a href="http://sokudon.s17.xrea.com/neta/mirisitaptidol1000.html">＃あいどるべつ1000位日速</a>
+-->
+
+<span id="ibe"></span><br>
+    <div id='left'></div>
+<form name="rank" id="rank">
+<select name="sel" id="ranksel" onChange="getdata()">
+<option>周年百位</option>
+<option selected="selected">周年2千5百位</option>
+<option>周年5千位</option>
+<option>周年1万位</option>
+<option>周年2万5千位</option>
+<option>周年5万位</option>
+</select>
+<label for="pt"><input type="radio" checked="checked" name="hyouka" id="pt"onChange="getdata()">PTのみ</label>
+<label for="ptd"><input type="radio"  name="hyouka" id="ptd"onChange="getdata()">PT差</label>
+<label for="ptp"><input type="radio"  name="hyouka" id="ptp" onChange="getdata()">PT比率</label>
+</form>
+<span id="ibed"></span><br>
+
+<label for="TZ"><input type="checkbox" id="TZ" onChange="getdata()">時差付き情報(海外だとサマータイム越境があるので（）)</label><br><br>
+
+//速度　周回の1回あたりのポイント、時速とかでもおｋ　※デフォはイベント曲4倍,2148 です //MM*4(2148)	おすすめ15倍(1071)	SV15倍ライブ(893) 必要イベントアイテム2148/720=2.98、３ぐらい<br>
+<input type="text" name="" value="2147" id="songpt" size="" maxlength="">
+<input type="Submit" value="設定したPTを反映" Generate" onclick="getdata();return false"><br>
+<br><br>
+
+<b>タイムゾーン設定 </b><br>
+<label for="OS"><input type="radio" checked="checked" name="hyouka" id="OS"onChange="getdata()">OSのタイムゾーンを優先する,<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Intl">OSタイムゾーン情報;</a><span id="intl"></span></label>
+<label for="useutc"><input type="radio" name="hyouka" id="useutc"onChange="getdata()"><a href="https://support.microsoft.com/ja-jp/help/973627/microsoft-time-zone-index-values">M$</a>のUTC固定時差情報を使う</label>
+<label for="usemoment"><input type="radio" name="hyouka" id="usemoment"onChange="getdata()"><a href="https://momentjs.com/timezone/">もめんと</a>タイムゾーン（国）を使う</label><br>
+
+<form name="tzone">
+//UTCこていじさ<br>
+<select name="owata" id="utcdiff"onChange="getdata()">
+<option>(GMT-12:00)国際日付変更線西側 日付変更線標準時,M$0</option>
+<option>(GMT-11:00)ミッドウェー島、サモア サモア標準時,M$1</option>
+<option>(GMT-10:00)ハワイ ハワイ標準時,M$2</option>
+<option>(GMT-09:00)アラスカ アラスカ標準時,M$3</option>
+<option>(GMT-08:00)(米国およびカナダ) は、太平洋標準時ティファナ 太平洋標準時,M$4</option>
+<option>(GMT-07:00)(米国およびカナダ)、山地標準時 山地標準時,M$A</option>
+<option>(GMT-07:00)チワワ、ラパス、マサトラン メキシコ標準時 2,M$D</option>
+<option>(GMT-07:00)アリゾナ州 米国山地標準時,M$F</option>
+<option>(GMT-06:00)(米国およびカナダ) の中部標準時 中部標準時,M$14</option>
+<option>(GMT-06:00)サスカチェワン カナダ中部標準時,M$19</option>
+<option>(GMT-06:00)グアダラハラ、メキシコシティ、モンテレイ メキシコ山地標準時,M$1E</option>
+<option>(GMT-06:00)中央アメリカ 中央アメリカ標準時,M$21</option>
+<option>(GMT-05:00)(米国およびカナダ)、東部標準時 東部標準時,M$23</option>
+<option>(GMT-05:00)インディアナ (東部) 米国東部標準時,M$28</option>
+<option>(GMT-05:00)ボゴタ、リマ、Quito 亜北極地帯の太平洋標準時,M$2D</option>
+<option>(GMT-04:00)大西洋標準時 (カナダ) 大西洋標準時,M$32</option>
+<option>(GMT-04:00)ジョージタウン、ラパス、サン ・ ファン 亜北極地帯西部標準時,M$37</option>
+<option>(GMT-04:00)サンティアゴ 太平洋亜北極地帯 (標準時),M$38</option>
+<option>(GMT-03:30)ニューファンドランド ニューファンドランドおよびラブラドル標準時,M$3C</option>
+<option>(GMT-03:00)ブラジリア 南アメリカ東部標準時,M$41</option>
+<option>(GMT-03:00)ジョージタウン 亜北極地帯東部標準時,M$46</option>
+<option>(GMT-03:00)グリーンランド グリーンランド標準時,M$49</option>
+<option>(GMT-02:00)中部大西洋 中央大西洋標準時,M$4B</option>
+<option>(GMT-01:00)アゾレス諸島 アゾレス諸島標準時,M$50</option>
+<option>(GMT-01:00)カーボベルデ諸島 カーボベルデ標準時,M$53</option>
+<option>(GMT+00:00)グリニッジ標準時: ダブリン、エジンバラ、リスボン、ロンドン GMT 標準時,M$55</option>
+<option>(GMT+00:00)モンロビア、レイキャビク グリニッジ標準時,M$5A</option>
+<option>(GMT+01:00)サニーベイル, カリフォルニア州、ブラチスラバ、ブダペスト、Ljubljana、プラハ 中央ヨーロッパ標準時,M$5F</option>
+<option>(GMT+01:00)サラエボ、Skopje、ワルシャワ、Zagreb 中央ヨーロッパ標準時,M$64</option>
+<option>(GMT+01:00)ブリュッセル、コペンハーゲン、マドリッド、パリ ロマンス標準時,M$69</option>
+<option>(GMT+01:00)アムステルダム、ベルリン、ベルン、ローマ、ストックホルム、ウィーン 西ヨーロッパ標準時,M$6E</option>
+<option>(GMT+01:00)西中央アフリカ 西中央アフリカ標準時,M$71</option>
+<option>(GMT+02:00)ミンスク 東ヨーロッパ標準時,M$73</option>
+<option>(GMT+02:00)カイロ エジプト標準時,M$78</option>
+<option>(GMT+02:00)ヘルシンキ、キエフ、リガ、ソフィア、Tallinn、Vilnius ファイル (標準時),M$7D</option>
+<option>(GMT+02:00)アテネ、ブカレスト、イスタンブール GTB 標準時,M$82</option>
+<option>(GMT+02:00)エルサレム イスラエル標準時,M$87</option>
+<option>(GMT+02:00)ハラレ、プレトリア 南アフリカ標準時,M$8C</option>
+<option>(GMT+03:00)モスクワ、サンクト ペテルスブルグ、ボルゴグラード ロシア標準時,M$91</option>
+<option>(GMT+03:00)クウェート、リヤド アラブ標準時,M$96</option>
+<option>(GMT+03:00)ナイロビ 東アフリカ標準時,M$9B</option>
+<option>(GMT+03:00)バグダッド アラブ標準時,M$9E</option>
+<option>(GMT+03:30)テヘラン イラン標準時,M$A0</option>
+<option>(GMT+04:00)アブダビ、マスカット アラビア標準時,M$A5</option>
+<option>(GMT+04:00)バクー、トビリシ、エレバン コーカサス標準時,M$AA</option>
+<option>(GMT+04:30)カブール 移行アフガニスタン標準時,M$AF</option>
+<option>(GMT+05:00)エカテリンバーグ エカテリンバーグ標準時,M$B4</option>
+<option>(GMT+05:00)タシケント 西アジア標準時,M$B9</option>
+<option>(GMT+05:30)チェンナイ、カルカッタ、ムンバイ、ニューデリー インド標準時,M$BE</option>
+<option>(GMT+05:45)カトマンズ ネパール標準時,M$C1</option>
+<option>(GMT+06:00)アスタナ、ダッカ 中央アジア標準時,M$C3</option>
+<option>(GMT+06:00)スリジャヤワルダナプラコッテ スリランカ標準時,M$C8</option>
+<option>(GMT+06:00)アルマアトイ、ノボシビルスク 北中央アジア標準時,M$C9</option>
+<option>(GMT+06:30)ヤンゴン (ラングーン) ミャンマー標準時,M$CB</option>
+<option>(GMT+07:00)バンコク、ハノイ、ジャカルタ 東南アジア標準時,M$CD</option>
+<option>(GMT+07:00)クラスノヤルスク 北アジア標準時,M$CF</option>
+<option>(GMT+08:00)北京、重慶、ホンコン、ウルムチ 中国 (標準時),M$D2</option>
+<option>(GMT+08:00)クアラルンプール、シンガポール シンガポール標準時,M$D7</option>
+<option>(GMT+08:00)台北 台北標準時,M$DC</option>
+<option>(GMT+08:00)パース 西オーストラリア標準時,M$E1</option>
+<option>(GMT+08:00)イルクーツク、ウランバートル 北アジア東部標準時,M$E3</option>
+<option>(GMT+09:00)(ソウル) 韓国 (標準時),M$E6</option>
+<option selected="selected">(GMT+09:00)大阪、札幌、東京 東京 (標準時),M$EB</option>
+<option>(GMT+09:00)ヤクーツク ヤクーツク標準時,M$F0</option>
+<option>(GMT+09:30)ダーウィン オーストラリア中央標準時,M$F5</option>
+<option>(GMT+09:30)アデレード 中央オーストラリア標準時,M$FA</option>
+<option>(GMT+10:00)キャンベラ、メルボルン、シドニー オーストラリア東部標準時,M$FF</option>
+<option>(GMT+10:00)ブリスベン 東オーストラリア標準時,M$104</option>
+<option>(GMT+10:00)ホバート タスマニア標準時,M$109</option>
+<option>(GMT+10:00)ウラジオ ストック ウラジオ ストック標準時,M$10E</option>
+<option>(GMT+10:00)グアム、ポートモレスビー 西太平洋標準時,M$113</option>
+<option>(GMT+11:00)マガダン、ソロモン諸島、ニューカレドニア 中央太平洋標準時,M$118</option>
+<option>(GMT+12:00)フィジー、カムチャツカ、マーシャル フィジー諸島標準時,M$11D</option>
+<option>(GMT+12:00)オークランド、ウェリントン ニュージーランド標準時,M$122</option>
+<option>(GMT+13:00)ヌクアロファ トンガ標準時,M$12C</option>
+<option>(GMT-03:00)ブエノスアイレス アゼルバイジャン標準時,M$80000040</option>
+<option>(GMT+02:00)コロンバス, ジョージア州 中東標準時,M$80000041</option>
+<option>(GMT+02:00)Amman ヨルダン標準時,M$80000042</option>
+<option>(GMT-06:00)グアダラハラ、メキシコシティ、モンテレー - 新規 中部標準時 (メキシコ),M$80000043</option>
+<option>(GMT-07:00)チワワ、ラパス、マサトラン - 新規 山地標準時 (メキシコ),M$80000044</option>
+<option>(GMT-08:00)ティファナ、バハカリフォルニア 太平洋標準時 (メキシコ),M$80000045</option>
+<option>(GMT+02:00)Windhoek ナミビア標準時,M$80000046</option>
+<option>(GMT+03:00)トビリシ グルジア標準時,M$80000047</option>
+<option>(GMT-04:00)Manaus 中央ブラジル標準時,M$80000048</option>
+<option>(GMT-03:00)モンテビデオ モンテビデオ標準時,M$80000049</option>
+<option>(GMT+04:00)エレバン アルメニア標準時,M$8000004A</option>
+<option>(GMT-04:30)カラカス ベネズエラ標準時,M$8000004B</option>
+<option>(GMT-03:00)ブエノスアイレス アルゼンチン標準時,M$8000004C</option>
+<option>(GMT+00:00)カサブランカ モロッコ標準時,M$8000004D</option>
+<option>(GMT+05:00)イスラマバード、カラチ パキスタン標準時,M$8000004E</option>
+<option>(GMT+04:00)ポートルイス モーリシャス標準時,M$8000004F</option>
+<option>(GMT+00:00)世界協定時刻 UTC,M$80000050</option>
+<option>(GMT-04:00)Asuncion パラグアイ標準時,M$80000051</option>
+<option>(GMT+12:00)Petropavlovsk Kamchatsky カムチャツカ標準時,M$80000052</option>
+</select>
+</form>
+
+<form name="gm" id="moment" onChange="getdata()">
+//もめんとたいむぞーん<br>
+<select name="gm" id="sel1" onChange="getdata()">
+</select><br>
+<input type="text" name="" value="日本" id="kuni" size="" maxlength=""><br>
+<input type="Submit" value="検索" Generate" onclick="settz();getdata();return false"><br>
+<span id="RC">-----</span><br>
+</form>
+
+</body></html>

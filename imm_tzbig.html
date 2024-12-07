@@ -380,10 +380,15 @@ document.getElementById("CUSTOM").checked=true;
 document.getElementById("titlecs").value=decodeURIComponent(nn[5]);
 }
 if(nn.length>=7){
-document.getElementById("cgame").checked=true;
  var m=nn[6].match(/\d+/);
+ if(m>0){
+ document.getElementById("cgame").checked=true;
  document.gmm.gmm.selectedIndex=m[0];
-}
+}}
+if(nn.length>=8){
+if(nn[7]=="addtz"){
+document.getElementById("addtz").checked=true;
+}}
 
 }
 }
@@ -453,12 +458,15 @@ if(document.getElementById("useutc").checked){
 if( document.getElementById("usemoment").checked){
 	s+="MT"+document.gm.gm.selectedIndex;
 }
+
+
 if(document.getElementById("userdt").value!=""){
 s+=","+encodeURIComponent(document.getElementById("userdt").value);
 }
 else{
 s+=",";
 }
+
 var cs=document.getElementById("CUSTOM").checked;
 if(cs){
 var tstring="%T%n現在時刻:%N%n%KS%K(%P%%B)%n%LS%L%n開始時間:%S%n終了時間:%E%nイベ時間:%V"
@@ -466,9 +474,24 @@ var ts=document.getElementById("titlecs").value;
 if(ts!=""){tstring=ts;}
 s+=","+encodeURIComponent(tstring);
 }
+else{
+s+=",";
+}
+
 if(document.getElementById("cgame").checked){
 	s+=",cgame"+document.gmm.gmm.selectedIndex;
 }
+else{
+s+=",";
+}
+
+if(document.getElementById("addtz").checked){
+	s+=",addtz";
+}
+else{
+s+=",";
+}
+
 
 return url+s;
 }
@@ -633,6 +656,12 @@ data = data.replace("星雲の窓辺",ibemie);
 data = data.replace("2024-04-30T17:00:00+09:00",moment(ibekaishi).format());
 data = data.replace("2024-05-08T22:00:00+09:00",moment(ibeowari).format());
 
+//"America/Los_Angeles"]
+if(document.getElementById("addtz").checked){
+var tzst=tzJAP[document.gm.gm.selectedIndex][0];
+data = data.replace('"America/Los_Angeles"]','"America/Los_Angeles","'+tzst+'"]');
+}
+
 TextDL(data,"obsduration_timer_custum.py");
         return false;
 }
@@ -654,7 +683,7 @@ function makeplugin(){
 getweb("./OBSdere_extend.lua");
 }
 function makepluginpy(){
-getweb("./neta/date-time_with_tzinfo.py");
+getweb("./date-time_with_tzinfo.py");
 }
 function makepy(){
 getweb("./ibetimer.py");
@@ -755,7 +784,8 @@ SNS用の短い表示<input type="Submit" value="SHORTVIEW" generate"="" onclick
 <a href="../OBSdere_sample.txt">ユーザー設定:</a><input type="text" name="" value="" id="user" maxlength="200"  size="50" ><br>
 </p>
 
-<input type="Submit" value="OBSPYTHONプラグイン" generate"="" onclick="makepluginpy();return false"> 
+<input type="Submit" value="OBSPYTHONプラグイン" generate"="" onclick="makepluginpy();return false">
+<label for="addtz"><input type="checkbox" name="addtz" id="addtz">もーめんと時差設定(Asia/Tokyo 等)を追加する</label>
 <a href="https://photos.app.goo.gl/puPDpiXsFb41YjW77">PYTHON obs設定さんぷる</a>
 
 <p><h4>pythonタイマー生成(要PY3.8以上):</h4>
